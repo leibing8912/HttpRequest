@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        applicationId "cn.jianke.httprequest"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        buildTypes {
+            debug {
+                buildConfigField("String", "API_URL", "\"http://askapi.jianke.com/\"")
+                buildConfigField("boolean", "ISRELEASE", "false")
+            }
+            beta {
+                buildConfigField("String", "API_URL", "\"http://172.17.30.211:8080/mbm-doctor-api/\"")
+                buildConfigField("boolean", "ISRELEASE", "false")
+            }
+            release {
+                // 是否进行混淆打包
+                minifyEnabled false
+                shrinkResources false
+                // 混淆文件的位置
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                buildConfigField("String", "API_URL", "\"https://mbp.jianke.com/mbm/doctor/api/\"")
+                buildConfigField("boolean", "ISRELEASE", "true")
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    // 网络请求 retrofit + okhttp + gson
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+}
