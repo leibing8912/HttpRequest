@@ -1,5 +1,5 @@
 # HttpRequest
-一个基于 retrofit + okhttp + json 封装的网络框架.
+一个基于 retrofit + okhttp + Gson 封装的网络框架.
 
 目的:简化代码,方便找bug.
 
@@ -8,7 +8,7 @@
 
 首先需要讲工程中httprequest和utils包整个目录都拷贝到需要集成的工程做为Base包.
 
-接着下来我需要做只需在api和httpresponse包添加api类以及json解析后对应的数据类代码如下:
+接着下来我需要做只需在api和httpresponse包添加api类以及Gson解析后对应的数据类代码如下:
 
 Api类:
 
@@ -112,7 +112,7 @@ public class LoginResponse extends BaseResponse implements Serializable{
 
 对LoginResponse类用法分析：
 
-这个Response类主要用做json解析数据后映射到该实例对象.如果我们要做将此对象通过序列化方式缓存的话,我们需要
+这个Response类主要用做Gson解析数据后映射到该实例对象.如果我们要做将此对象通过序列化方式缓存的话,我们需要
 将此类序列号并且把它的序列化UID写出来.Android Studio如何自动生成序列化UID?
 
 Android Studio自动生成序列化UID操作如下:
