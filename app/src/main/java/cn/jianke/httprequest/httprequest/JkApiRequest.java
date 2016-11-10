@@ -24,14 +24,6 @@ public class JkApiRequest {
      * @return
      */
     private JkApiRequest(){
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new OkHttpInterceptor())
-                .build();
-        retrofit = new Retrofit.Builder()
-                .baseUrl(InterfaceParameters.REQUEST_HTTP_URL)
-                .addConverterFactory(JkApiConvertFactory.create())
-                .client(client)
-                .build();
     }
 
     /**
@@ -57,7 +49,15 @@ public class JkApiRequest {
      * @param service api class
      * @return
      */
-    public <T> T create(Class<T> service) {
+    public <T> T create(Class<T> service, String baseUrl) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new OkHttpInterceptor())
+                .build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(JkApiConvertFactory.create())
+                .client(client)
+                .build();
         return retrofit.create(service);
     }
 }

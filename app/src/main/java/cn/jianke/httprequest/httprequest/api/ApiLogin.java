@@ -2,6 +2,7 @@ package cn.jianke.httprequest.httprequest.api;
 
 import java.net.URLEncoder;
 import cn.jianke.httprequest.httprequest.ApiCallback;
+import cn.jianke.httprequest.httprequest.InterfaceParameters;
 import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.JkApiCallback;
 import cn.jianke.httprequest.httprequest.httpresponse.LoginResponse;
@@ -29,7 +30,8 @@ public class ApiLogin {
      */
     public ApiLogin() {
         // 初始化api
-        mApiStore = JkApiRequest.getInstance().create(ApiStore.class);
+        mApiStore = JkApiRequest.getInstance().create(ApiStore.class,
+                InterfaceParameters.REQUEST_HTTP_URL);
     }
 
     /**
@@ -42,7 +44,7 @@ public class ApiLogin {
      * @param callback 回调
      * @return
      */
-    public void Login(String username, String password, ApiCallback<LoginResponse> callback){
+    public void login(String username, String password, ApiCallback<LoginResponse> callback){
         Call<LoginResponse> mCall =  mApiStore.login(URLEncoder.encode(username), password);
         mCall.enqueue(new JkApiCallback<LoginResponse>(callback));
     }
@@ -54,7 +56,7 @@ public class ApiLogin {
      * @createTime: 2016/08/30
      */
     private interface ApiStore {
-        @GET("app/User/Login")
+        @GET("app/User/login")
         Call<LoginResponse> login(
                 @Query("username") String username,
                 @Query("userpass") String userpass);

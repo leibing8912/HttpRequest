@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".module.MainActivity">
+    tools:context=".module.activity.MainActivity">
     <Button
         android:id="@+id/btn_request_login_msg"
         android:layout_width="wrap_content"
@@ -19,4 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_request_login_msg"/>
+    <Button
+        android:id="@+id/btn_history_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="历史上的今天"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

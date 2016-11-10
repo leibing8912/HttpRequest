@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HttpRequest</string>
+    <string name="title_activity_history_today">HistoryTodayActivity</string>
 </resources>

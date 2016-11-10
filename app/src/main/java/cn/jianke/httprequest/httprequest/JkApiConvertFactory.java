@@ -53,6 +53,24 @@ public class JkApiConvertFactory extends Converter.Factory{
                 // 解析Json数据返回TransData对象
                 TransData transData = TransUtil.getResponse(reString);
                 try {
+                    // 如果返回json第一层数据存在json数组，则做此兼容处理 add by leibing 2016/11/10
+                    if (TransUtil.isJsonListData) {
+                        TransUtil.isJsonListData = false;
+                        if (!TextUtils.isEmpty(transData.getJkjsonlist())) {
+                            baseResponse = new Gson().fromJson(transData.getJkjsonlist(), type);
+                            baseResponse.setSuccess(transData.getErrorcode().equals("0"));
+                            baseResponse.setErrormsg(transData.getErrormsg());
+                            baseResponse.setInfo(transData.getJkjsonlist());
+                        } else {
+                            baseResponse = (BaseResponse) StringUtil.getObject(((Class) type)
+                                    .getName());
+                            baseResponse.setSuccess(transData.getErrorcode().equals("0"));
+                            baseResponse.setErrormsg(transData.getErrormsg());
+                            baseResponse.setInfo(transData.getInfo());
+                        }
+                        return (T) baseResponse;
+                    }
+
                     if (transData.getErrorcode().equals("0") &&  !TextUtils.isEmpty(transData.getInfo())) {
                         baseResponse = new Gson().fromJson(transData.getInfo(), type);
                         baseResponse.setSuccess(transData.getErrorcode().equals("0"));
