@@ -1,6 +1,5 @@
 package cn.jianke.httprequest.module.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,7 +16,7 @@ import cn.jianke.httprequest.module.adapter.HistoryTodayAdapter;
  * @author: leibing
  * @createTime: 2016/11/10
  */
-public class HistoryTodayActivity extends Activity {
+public class HistoryTodayActivity extends BaseActivity {
     // listView
     private ListView historyTodayLv;
     // 数据源
