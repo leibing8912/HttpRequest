@@ -2,7 +2,6 @@ package cn.jianke.httprequest.httprequest.httpresponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 /**
  * @className: HistoryTodayResponse
  * @classDescription: 历史上的今天响应数据

@@ -57,7 +57,7 @@ public class JkApiCallback<T> implements Callback <T>{
     private String requestId;
     // 异常
     public final static String EXCEPTION = "exception";
-    // 空数据错误
+    // 空数据
     public final static String NULL_DATA  = "nodata";
 
     /**
@@ -82,8 +82,7 @@ public class JkApiCallback<T> implements Callback <T>{
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        if (mCallback == null
-                || activityWeakRef == null
+        if (activityWeakRef == null
                 || activityWeakRef.get() == null) {
             return;
         }
@@ -297,6 +296,9 @@ public class JkApiCallback<T> implements Callback <T>{
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
+        if (activityWeakRef == null
+                || activityWeakRef.get() == null)
+            return;
         // 失败回调
         failCallBack();
     }

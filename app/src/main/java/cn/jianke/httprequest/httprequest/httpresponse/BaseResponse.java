@@ -18,6 +18,9 @@ public class BaseResponse implements Serializable {
     // 错误消息
     public String errormsg;
 
+    /**------------------------------------get and set---------------------------------------------
+     -----------------------------------------------------------------------------------*/
+
     public boolean isSuccess() {
         return isSuccess;
     }

@@ -12,7 +12,10 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
- * Created by pc on 2016/9/5.
+ * @className: APiTest
+ * @classDescription: 测试
+ * @author: leibing
+ * @createTime: 2017/4/11
  */
 public class APiTest {
     // api
@@ -34,6 +37,19 @@ public class APiTest {
                 REQUEST_HTTP_URL);
     }
 
+    /**
+     * call
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param phone
+     * @param loginName
+     * @param timestamp
+     * @param sign
+     * @param activity
+     * @param callback
+     * @return
+     */
     public void call(String phone, String loginName, String timestamp, String sign,
                      Activity activity, ApiCallback<BaseResponse> callback){
         Call<BaseResponse> mCall =  mApiStore.call(phone,loginName,timestamp,sign,"9","1");
@@ -48,7 +64,6 @@ public class APiTest {
      * @createTime: 2016/08/30
      */
     private interface ApiStore {
-
         @FormUrlEncoded
         @POST("HomePage/CallSend")
         Call<BaseResponse> call(

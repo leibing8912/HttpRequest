@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import cn.jianke.httprequest.httprequest.ApiCallback;
+import cn.jianke.httprequest.httprequest.httpresponse.BaseResponse;
 import cn.jianke.httprequest.module.AppManager;
 import cn.jianke.httprequest.utils.StringUtil;
 import okhttp3.Call;
@@ -26,6 +27,8 @@ public class JkOkHttpCallBack<T> implements Callback {
     public static final String REQUEST_ID_ONE = "request_id_one";
     // 请求标识--数据格式二（无需解析数据，直接回调）
     public static final String REQUEST_ID_TWO = "request_id_two";
+    // 请求标识--数据格式三（{"errorcode":"0","errormsg":"成功","info"：obj}）
+    public static final String REQUEST_ID_THREE = "request_id_three";
     // 数据解析标识--result
     public final static String DATA_ANALYSIS_IDENTIFY_RESULT = "result";
     // 数据解析标识--data
@@ -34,18 +37,26 @@ public class JkOkHttpCallBack<T> implements Callback {
     public final static String DATA_ANALYSIS_IDENTIFY_STATUS = "status";
     // 数据解析标识--info
     public final static String DATA_ANALYSIS_IDENTIFY_INFO = "info";
+    // 数据解析标识--errorcode
+    public final static String DATA_ANALYSIS_IDENTIFY_ERRORCODE = "errorcode";
+    // 数据解析标识--errormsg
+    public final static String DATA_ANALYSIS_IDENTIFY_ERRORMSG = "errormsg";
     // 数据解析标识--msg
     public final static String DATA_ANALYSIS_IDENTIFY_MSG = "msg";
     // 数据解析标识--code
     public final static String DATA_ANALYSIS_IDENTIFY_CODE = "code";
     // 数据解析标识--success
     public final static String DATA_ANALYSIS_IDENTIFY_SUCCESS = "success";
-    // 未知错误
-    public final static String UNKNOWN_ERROR = "unknown_error";
-    // 空数据错误
-    public final static String NULL_DATA  = "no_data";
-    // 数据格式错误
-    public final static String DATA_FORMAT_ERROR = "数据格式错误";
+    // 状态标识--0
+    public final static String STATUS_IDENTIFY_ZORE = "0";
+    // 状态标识--1
+    public final static String STATUS_IDENTIFY_ONE = "1";
+    // 状态标识--true
+    public final static String STATUS_IDENTIFY_TRUE = "true";
+    // 异常
+    public final static String EXCEPTION = "exception";
+    // 空数据
+    public final static String NULL_DATA  = "nodata";
     // 回调
     private ApiCallback<T> mCallback;
     // 页面弱引用
@@ -94,17 +105,16 @@ public class JkOkHttpCallBack<T> implements Callback {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        if (mCallback == null
-                || activityWeakRef == null
+        if (activityWeakRef == null
                 || activityWeakRef.get() == null)
             return;
-        mCallback.onFailure();
+        // 失败回调
+        failCallBack();
     }
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        if (mCallback == null
-                || activityWeakRef == null
+        if (activityWeakRef == null
                 || activityWeakRef.get() == null)
             return;
         // 处理是否当前页，如果非当前页则无需回调更新UI
@@ -133,10 +143,52 @@ public class JkOkHttpCallBack<T> implements Callback {
                     // 数据格式二处理
                     requestIdTwoDeal(body);
                     break;
+                case REQUEST_ID_THREE:
+                    // 数据格式三处理
+                    requestIdThreeDeal(body);
+                    break;
                 default:
                     break;
             }
             return;
+        }
+    }
+
+    /**
+     * 数据格式三处理
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param body
+     * @return
+     */
+    private void requestIdThreeDeal(String body) {
+        try {
+            JSONObject mJson = new JSONObject(body);
+            // 响应码
+            String errorCode = mJson.optString(DATA_ANALYSIS_IDENTIFY_ERRORCODE);
+            // 消息
+            String errormsg = mJson.optString(DATA_ANALYSIS_IDENTIFY_ERRORMSG);
+            // 结果信息
+            String info = mJson.optString(DATA_ANALYSIS_IDENTIFY_INFO);
+            BaseResponse baseResponse;
+            // 请求成功
+            if (STATUS_IDENTIFY_ZORE.equals(errorCode)
+                    && StringUtil.isNotEmpty(info)){
+                // Gson解析数据，回调数据
+                baseResponse = (BaseResponse) new Gson().fromJson(info, typeCls);
+                baseResponse.setSuccess(true);
+                baseResponse.setErrormsg(errormsg);
+                baseResponse.setInfo(info);
+                successCallBack(baseResponse);
+            }else {
+                // 请求错误（回调错误信息）
+                errorCallBack(info);
+            }
+        } catch (JSONException e) {
+            // 异常
+            errorCallBack(EXCEPTION);
+            e.printStackTrace();
         }
     }
 
@@ -174,8 +226,8 @@ public class JkOkHttpCallBack<T> implements Callback {
             String info = msg.optString(DATA_ANALYSIS_IDENTIFY_INFO);
             String data = result.optJSONObject(DATA_ANALYSIS_IDENTIFY_DATA).toString();
             // 成功
-            if ("0".equals(code)
-                    && "true".equals(success)){
+            if (STATUS_IDENTIFY_ZORE.equals(code)
+                    && STATUS_IDENTIFY_TRUE.equals(success)){
                 // 若数据为非空则gson解析数据回调
                 if (StringUtil.isNotEmpty(data)){
                     successCallBack(new Gson().fromJson(data, typeCls));
@@ -187,11 +239,11 @@ public class JkOkHttpCallBack<T> implements Callback {
                 errorCallBack(info);
             }
         } catch (JSONException e) {
-            errorCallBack(DATA_FORMAT_ERROR);
+            errorCallBack(EXCEPTION);
             e.printStackTrace();
         }
     }
-
+    
     /**
      * 成功回调
      * @author leibing
