@@ -17,6 +17,12 @@ import cn.jianke.httprequest.httprequest.httpresponse.LoginResponse;
  * @createTime: 2016/08/30
  */
 public class MainActivity extends BaseActivity {
+    // 网络框架类型
+    public final static String NETWORK_FRAMEWORK_TYPE = "network_framework_type";
+    // 网络框架类型--retrofit
+    public final static String NETWORK_FRAMEWORK_TYPE_RETROFIT = "network_framework_type_retrofit";
+    // 网络框架类型--okhttp
+    public final static String NETWORK_FRAMEWORK_TYPE_OKHTTP = "network_framework_type_okhttp";
     // 登录信息显示
     private TextView mLoginMsgTv;
     // Api
@@ -58,11 +64,21 @@ public class MainActivity extends BaseActivity {
                 });
             }
         });
-        // 历史上的今天
-        findViewById(R.id.btn_history_today).setOnClickListener(new View.OnClickListener() {
+        // 历史上的今天(retrofit)
+        findViewById(R.id.btn_history_today_retrofit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, HistoryTodayActivity.class);
+                intent.putExtra(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_RETROFIT);
+                startActivity(intent);
+            }
+        });
+        // 历史上的今天（okhttp）
+        findViewById(R.id.btn_history_today_okhttp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HistoryTodayActivity.class);
+                intent.putExtra(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_OKHTTP);
                 startActivity(intent);
             }
         });

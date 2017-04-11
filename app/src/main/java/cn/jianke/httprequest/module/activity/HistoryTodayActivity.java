@@ -4,11 +4,19 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.HashMap;
 import cn.jianke.httprequest.R;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.api.ApiHistoryToday;
 import cn.jianke.httprequest.httprequest.httpresponse.HistoryTodayResponse;
+import cn.jianke.httprequest.httprequest.okhttp.JkOkHttpCallBack;
+import cn.jianke.httprequest.httprequest.okhttp.OkHttpRequestUtils;
+import cn.jianke.httprequest.httprequest.okhttp.RequestUrlManager;
 import cn.jianke.httprequest.module.adapter.HistoryTodayAdapter;
+import cn.jianke.httprequest.utils.StringUtil;
+import static cn.jianke.httprequest.module.activity.MainActivity.NETWORK_FRAMEWORK_TYPE;
+import static cn.jianke.httprequest.module.activity.MainActivity.NETWORK_FRAMEWORK_TYPE_OKHTTP;
+import static cn.jianke.httprequest.module.activity.MainActivity.NETWORK_FRAMEWORK_TYPE_RETROFIT;
 
 /**
  * @className: HistoryTodayActivity
@@ -25,6 +33,12 @@ public class HistoryTodayActivity extends BaseActivity {
     private HistoryTodayAdapter mAdapter;
     // Api
     private ApiHistoryToday mApiHistoryToday;
+    // month
+    private String month = "10";
+    // day
+    private String day = "1";
+    // key
+    private String key = "2df3bf9577484943b20a59321de0c707";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,27 +51,102 @@ public class HistoryTodayActivity extends BaseActivity {
         // 适配
         mAdapter = new HistoryTodayAdapter(this, mData);
         historyTodayLv.setAdapter(mAdapter);
+        // 根据意图传值请求数据
+        requestDataByIntent();
+    }
+
+    /**
+     * 根据意图传值请求数据
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param
+     * @return
+     */
+    private void requestDataByIntent() {
+        String type = getIntent().getStringExtra(NETWORK_FRAMEWORK_TYPE);
+        switch (type){
+            case NETWORK_FRAMEWORK_TYPE_RETROFIT:
+                // retrofit
+                System.out.println("xxxxxxxxxxxx retrofit");
+                requestByRetrofit();
+                break;
+            case NETWORK_FRAMEWORK_TYPE_OKHTTP:
+                // okhttp
+                System.out.println("xxxxxxxxxxxx okhttp");
+                requestByOkhttp();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 通过okhttp请求数据
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param
+     * @return
+     */
+    private void requestByOkhttp(){
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("month", month);
+        params.put("day", day);
+        params.put("key", key);
+        OkHttpRequestUtils.getInstance().requestByGet(RequestUrlManager.HISTORY_TODAY_REQUEST_URL,
+                params, HistoryTodayResponse.class, JkOkHttpCallBack.REQUEST_ID_ONE, this,
+                new ApiCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        // 更新Ui
+                        updateUI((HistoryTodayResponse) response);
+                    }
+
+                    @Override
+                    public void onError(String err_msg) {
+                        if (StringUtil.isNotEmpty(err_msg))
+                        Toast.makeText(HistoryTodayActivity.this, err_msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(HistoryTodayActivity.this, "网络不给力", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    /**
+     * 通过retrofit请求数据
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param
+     * @return
+     */
+    private void requestByRetrofit(){
         // 初始化api
         mApiHistoryToday = new ApiHistoryToday();
         // 请求数据
-        mApiHistoryToday.getHistoryTodayData("10", "1", "2df3bf9577484943b20a59321de0c707",this,
+        mApiHistoryToday.getHistoryTodayData(month, day, key,this,
                 new ApiCallback<HistoryTodayResponse>() {
-            @Override
-            public void onSuccess(HistoryTodayResponse response) {
-                // 更新Ui
-                updateUI(response);
-            }
+                    @Override
+                    public void onSuccess(HistoryTodayResponse response) {
+                        // 更新Ui
+                        updateUI(response);
+                    }
 
-            @Override
-            public void onError(String err_msg) {
-                Toast.makeText(HistoryTodayActivity.this, err_msg, Toast.LENGTH_SHORT).show();
-            }
+                    @Override
+                    public void onError(String err_msg) {
+                        if (StringUtil.isNotEmpty(err_msg))
+                            Toast.makeText(HistoryTodayActivity.this, err_msg, Toast.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void onFailure() {
-                Toast.makeText(HistoryTodayActivity.this, "网络不给力", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(HistoryTodayActivity.this, "网络不给力", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /**

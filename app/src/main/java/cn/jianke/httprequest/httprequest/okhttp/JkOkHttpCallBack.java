@@ -23,7 +23,9 @@ import okhttp3.Response;
  * @createTime: 2017/3/16
  */
 public class JkOkHttpCallBack<T> implements Callback {
-    // 请求标识--数据格式一(msg: {info: "",code: 0,success: true},data: null})
+    // 添加json标签名称
+    public final static String JK_JSON_NAME = "jk_json_name";
+    // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
     public static final String REQUEST_ID_ONE = "request_id_one";
     // 请求标识--数据格式二（无需解析数据，直接回调）
     public static final String REQUEST_ID_TWO = "request_id_two";
@@ -47,6 +49,10 @@ public class JkOkHttpCallBack<T> implements Callback {
     public final static String DATA_ANALYSIS_IDENTIFY_CODE = "code";
     // 数据解析标识--success
     public final static String DATA_ANALYSIS_IDENTIFY_SUCCESS = "success";
+    // 数据解析标识--error_code
+    public final static String DATA_ANALYSIS_IDENTIFY_ERROR_CODE = "error_code";
+    // 数据解析标识--reason
+    public final static String DATA_ANALYSIS_IDENTIFY_REASON = "reason";
     // 状态标识--0
     public final static String STATUS_IDENTIFY_ZORE = "0";
     // 状态标识--1
@@ -211,39 +217,60 @@ public class JkOkHttpCallBack<T> implements Callback {
     /**
      * 数据格式一处理
      * @author leibing
-     * @createTime 2017/4/10
-     * @lastModify 2017/4/10
-     * @param body
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param body 数据字符串
      * @return
      */
     private void requestIdOneDeal(String body) {
-        final JSONObject result;
         try {
-            result = new JSONObject(JSONTokener(body));
-            JSONObject msg = result.optJSONObject(DATA_ANALYSIS_IDENTIFY_MSG);
-            String code = msg.optString(DATA_ANALYSIS_IDENTIFY_CODE);
-            String success = msg.optString(DATA_ANALYSIS_IDENTIFY_SUCCESS);
-            String info = msg.optString(DATA_ANALYSIS_IDENTIFY_INFO);
-            String data = result.optJSONObject(DATA_ANALYSIS_IDENTIFY_DATA).toString();
-            // 成功
-            if (STATUS_IDENTIFY_ZORE.equals(code)
-                    && STATUS_IDENTIFY_TRUE.equals(success)){
-                // 若数据为非空则gson解析数据回调
-                if (StringUtil.isNotEmpty(data)){
-                    successCallBack(new Gson().fromJson(data, typeCls));
-                }else {
-                    successCallBack(null);
-                }
+            JSONObject mJson = new JSONObject(body);
+            // 响应码
+            String errorCode = mJson.optString(DATA_ANALYSIS_IDENTIFY_ERROR_CODE);
+            // 消息
+            String reason = mJson.optString(DATA_ANALYSIS_IDENTIFY_REASON);
+            // 结果信息
+            String result = mJson.optString(DATA_ANALYSIS_IDENTIFY_RESULT);
+            // 改造后json字符串
+            String remakeStr = remakeJsonData(body);
+            // 获取需解析数据
+            JSONObject remakeJsonObject = new JSONObject(remakeStr);
+            String data = remakeJsonObject.optString(JK_JSON_NAME);
+            // 请求成功
+            if (STATUS_IDENTIFY_ZORE.equals(errorCode)
+                    && StringUtil.isNotEmpty(result)){
+                // Gson解析数据，回调数据
+                BaseResponse baseResponse;
+                baseResponse = (BaseResponse) new Gson().fromJson(data, typeCls);
+                baseResponse.setSuccess(true);
+                baseResponse.setErrormsg(reason);
+                baseResponse.setInfo(data);
+                successCallBack(baseResponse);
             }else {
-                // 失败
-                errorCallBack(info);
+                // 请求错误（回调错误信息）
+                errorCallBack(reason);
             }
         } catch (JSONException e) {
+            // 异常
             errorCallBack(EXCEPTION);
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * 改造json数据，增加一层标签
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param jsonStr 改造前json字符串
+     * @return jsonObject.toString 改造后json字符串
+     */
+    public static String remakeJsonData(String jsonStr) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(JK_JSON_NAME, new JSONObject(jsonStr));
+        return jsonObject.toString();
+    }
+
     /**
      * 成功回调
      * @author leibing

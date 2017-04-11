@@ -20,9 +20,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_request_login_msg"/>
     <Button
-        android:id="@+id/btn_history_today"
+        android:id="@+id/btn_history_today_retrofit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="历史上的今天"
+        android:text="retrofit"
         android:layout_centerInParent="true"/>
+    <Button
+        android:id="@+id/btn_history_today_okhttp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="okhttp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/btn_history_today_retrofit"/>
 </RelativeLayout>
