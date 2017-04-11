@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 
 /**
  * @className: OkHttpRequestUtils
- * @classDescription: ok http request
+ * @classDescription: okhttp request
  * @author: leibing
  * @createTime: 2017/3/16
  */

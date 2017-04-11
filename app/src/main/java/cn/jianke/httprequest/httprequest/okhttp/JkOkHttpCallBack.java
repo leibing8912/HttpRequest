@@ -17,8 +17,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * @className:
- * @classDescription:
+ * @className: JkOkHttpCallBack
+ * @classDescription: okhttp回调
  * @author: leibing
  * @createTime: 2017/3/16
  */
