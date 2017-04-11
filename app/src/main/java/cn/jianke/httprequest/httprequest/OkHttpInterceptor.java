@@ -33,9 +33,7 @@ public class OkHttpInterceptor implements Interceptor {
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
         // 比如: --> POST http://121.40.227.8:8088/api http/1.1
         String requestStartMessage = "--> " + request.method() + ' ' + request.url() + ' ' + protocol;
-
-        System.out.println("ddddddddddddddddddd requestStartMessage = " + requestStartMessage);
-
+        System.out.println("xxxxxxxxxxxx requestStartMessage = " + requestStartMessage);
         // 打印 Response
         Response response;
         try {
@@ -55,7 +53,7 @@ public class OkHttpInterceptor implements Interceptor {
             Charset charset = UTF8;
             if (contentLength != 0) {
                 // 获取Response的body的字符串 并打印
-                System.out.println("ddddddddddddddddddddddddd response = " + buffer.clone().readString(charset));
+                System.out.println("xxxxxxxxxxxx requestStartMessage = " + requestStartMessage);
             }
         }
         return response;

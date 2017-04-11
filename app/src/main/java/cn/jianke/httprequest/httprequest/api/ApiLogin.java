@@ -1,10 +1,11 @@
 package cn.jianke.httprequest.httprequest.api;
 
+import android.app.Activity;
 import java.net.URLEncoder;
+import cn.jianke.httprequest.BuildConfig;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.InterfaceParameters;
-import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.JkApiCallback;
+import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.httpresponse.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,6 +20,8 @@ import retrofit2.http.Query;
 public class ApiLogin {
     // api
     private ApiStore mApiStore;
+    // request url
+    private String REQUEST_HTTP_URL = BuildConfig.API_URL;
 
     /**
      * Constructor
@@ -30,8 +33,7 @@ public class ApiLogin {
      */
     public ApiLogin() {
         // 初始化api
-        mApiStore = JkApiRequest.getInstance().create(ApiStore.class,
-                InterfaceParameters.REQUEST_HTTP_URL);
+        mApiStore = JkApiRequest.getInstance().create(ApiStore.class, REQUEST_HTTP_URL);
     }
 
     /**
@@ -41,12 +43,15 @@ public class ApiLogin {
      * @lastModify 2016/08/30
      * @param username 用户名
      * @param password 密码
+     * @param activity 页面实例
      * @param callback 回调
      * @return
      */
-    public void login(String username, String password, ApiCallback<LoginResponse> callback){
+    public void login(String username, String password,
+                      Activity activity, ApiCallback<LoginResponse> callback){
         Call<LoginResponse> mCall =  mApiStore.login(URLEncoder.encode(username), password);
-        mCall.enqueue(new JkApiCallback<LoginResponse>(callback));
+        mCall.enqueue(new JkApiCallback<LoginResponse>(callback, activity,
+                LoginResponse.class, JkApiCallback.REQUEST_ID_THREE));
     }
 
     /**

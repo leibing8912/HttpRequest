@@ -38,7 +38,8 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.btn_request_login_msg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mApiLogin.login(USERNAME, PASSWORD, new ApiCallback<LoginResponse>() {
+                mApiLogin.login(USERNAME, PASSWORD, MainActivity.this,
+                        new ApiCallback<LoginResponse>() {
                     @Override
                     public void onSuccess(LoginResponse response) {
                         mLoginMsgTv.setText("login accesstoken : \n" + response.accesstoken);

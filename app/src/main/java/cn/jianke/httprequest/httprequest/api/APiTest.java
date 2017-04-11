@@ -1,7 +1,8 @@
 package cn.jianke.httprequest.httprequest.api;
 
+import android.app.Activity;
+import cn.jianke.httprequest.BuildConfig;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.InterfaceParameters;
 import cn.jianke.httprequest.httprequest.JkApiCallback;
 import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.httpresponse.BaseResponse;
@@ -16,6 +17,8 @@ import retrofit2.http.POST;
 public class APiTest {
     // api
     private ApiStore mApiStore;
+    // request url
+    private String REQUEST_HTTP_URL = BuildConfig.API_URL;
 
     /**
      * Constructor
@@ -28,13 +31,14 @@ public class APiTest {
     public APiTest() {
         // 初始化api
         mApiStore = JkApiRequest.getInstance().create(ApiStore.class,
-                InterfaceParameters.REQUEST_HTTP_URL);
+                REQUEST_HTTP_URL);
     }
 
     public void call(String phone, String loginName, String timestamp, String sign,
-                     ApiCallback<BaseResponse> callback){
+                     Activity activity, ApiCallback<BaseResponse> callback){
         Call<BaseResponse> mCall =  mApiStore.call(phone,loginName,timestamp,sign,"9","1");
-        mCall.enqueue(new JkApiCallback<BaseResponse>(callback));
+        mCall.enqueue(new JkApiCallback<BaseResponse>(callback, activity,
+                BaseResponse.class, JkApiCallback.REQUEST_ID_TWO));
     }
 
     /**

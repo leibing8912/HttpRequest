@@ -40,7 +40,7 @@ public class HistoryTodayActivity extends BaseActivity {
         // 初始化api
         mApiHistoryToday = new ApiHistoryToday();
         // 请求数据
-        mApiHistoryToday.getHistoryTodayData("10", "1", "c4e9f600dbc849f7afc6414317841e99",
+        mApiHistoryToday.getHistoryTodayData("10", "1", "2df3bf9577484943b20a59321de0c707",this,
                 new ApiCallback<HistoryTodayResponse>() {
             @Override
             public void onSuccess(HistoryTodayResponse response) {

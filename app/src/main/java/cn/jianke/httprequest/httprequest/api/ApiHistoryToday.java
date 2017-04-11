@@ -1,10 +1,10 @@
 package cn.jianke.httprequest.httprequest.api;
 
+import android.app.Activity;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.JkApiCallback;
 import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.httpresponse.HistoryTodayResponse;
-import cn.jianke.httprequest.utils.TransUtil;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -46,12 +46,11 @@ public class ApiHistoryToday {
      * @return
      */
     public void getHistoryTodayData(String month, String day, String key,
+                                    Activity activity,
                       ApiCallback<HistoryTodayResponse> callback){
-        // 当前接口返回数据第一层数据中存在json数组 add by leibing 2016/11/10
-        TransUtil.isJsonListData = true;
-
         Call<HistoryTodayResponse> mCall =  mApiStore.getHistoryTodayData(month, day, key);
-        mCall.enqueue(new JkApiCallback<HistoryTodayResponse>(callback));
+        mCall.enqueue(new JkApiCallback<HistoryTodayResponse>(callback, activity,
+                HistoryTodayResponse.class, JkApiCallback.REQUEST_ID_ONE));
     }
 
     /**
