@@ -9,6 +9,7 @@ import cn.jianke.httprequest.R;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.api.ApiHistoryToday;
 import cn.jianke.httprequest.httprequest.httpresponse.HistoryTodayResponse;
+import cn.jianke.httprequest.httprequest.okhttp.JKOkHttpParamKey;
 import cn.jianke.httprequest.httprequest.okhttp.JkOkHttpCallBack;
 import cn.jianke.httprequest.httprequest.okhttp.OkHttpRequestUtils;
 import cn.jianke.httprequest.httprequest.okhttp.RequestUrlManager;
@@ -90,12 +91,10 @@ public class HistoryTodayActivity extends BaseActivity {
      * @return
      */
     private void requestByOkhttp(){
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("month", month);
-        params.put("day", day);
-        params.put("key", key);
         OkHttpRequestUtils.getInstance().requestByGet(RequestUrlManager.HISTORY_TODAY_REQUEST_URL,
-                params, HistoryTodayResponse.class, JkOkHttpCallBack.REQUEST_ID_ONE, this,
+                OkHttpRequestUtils.getInstance().JkRequestParameters(
+                        JKOkHttpParamKey.HISTORY_TODAY_PARAM, month, day, key),
+                HistoryTodayResponse.class, JkOkHttpCallBack.REQUEST_ID_ONE, this,
                 new ApiCallback() {
                     @Override
                     public void onSuccess(Object response) {
