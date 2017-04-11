@@ -6,6 +6,7 @@
 
 ## Usage
 
+### retrofit架构
 首先需要讲工程中httprequest和utils包整个目录都拷贝到需要集成的工程做为Base包.
 
 接着下来我需要做只需在api和httpresponse包添加api类以及Gson解析后对应的数据类代码如下:
@@ -121,6 +122,59 @@ Android Studio自动生成序列化UID操作如下:
 
 * 进入实现了Serializable中的类，选中类名，Alt+Enter弹出提示，然后直接导入完成.
 
+### okhttp架构
+使用比较简单，请看代码：
+
+```java
+
+    /**
+     * 通过okhttp请求数据
+     * @author leibing
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param
+     * @return
+     */
+    private void requestByOkhttp(){
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("month", month);
+        params.put("day", day);
+        params.put("key", key);
+        OkHttpRequestUtils.getInstance().requestByGet(RequestUrlManager.HISTORY_TODAY_REQUEST_URL,
+                params, HistoryTodayResponse.class, JkOkHttpCallBack.REQUEST_ID_ONE, this,
+                new ApiCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        // 更新Ui
+                        updateUI((HistoryTodayResponse) response);
+                    }
+
+                    @Override
+                    public void onError(String err_msg) {
+                        if (StringUtil.isNotEmpty(err_msg))
+                        Toast.makeText(HistoryTodayActivity.this, err_msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(HistoryTodayActivity.this, "网络不给力", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+```
+
+### 2017.04.11
+#### retrofit架构
+
+* 将数据解析从JkApiConvertFactory迁移到JkApiCallback中处理；
+* 增加对页面弱引用处理、加入Activity堆栈管理判断当前页再回调处理；
+* 根据请求标识处理对应数据格式，提高代码可读性，维护性；
+
+#### okhttp架构（新增）
+* RequestUrlManager管理请求Url地址；
+* OkHttpRequestUtils管理请求服务；
+* JkOkHttpCallBack管理数据解析以及回调服务；
 
 ### License
 Copyright 2016 leibing
