@@ -240,7 +240,7 @@ public class OkHttpRequestUtils {
      * @param paramValue value
      * @return
      */
-    public HashMap<String,String> JkRequestParameters(String[] paramKey, String... paramValue){
+    public static HashMap<String,String> JkRequestParameters(String[] paramKey, String... paramValue){
         HashMap paramMap = new HashMap<String, String>();
         for(int i=0; paramKey!=null && i<paramKey.length && i<paramValue.length; i++){
             paramMap.put(paramKey[i], paramValue[i]);
