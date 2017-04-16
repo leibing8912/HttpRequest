@@ -20,7 +20,7 @@ import retrofit2.Response;
  * @author: leibing
  * @createTime: 2017/4/16
  */
-public class CommonApiCallback<T> implements Callback <T>{
+public abstract class CommonApiCallback<T> implements Callback <T>{
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
@@ -54,7 +54,7 @@ public class CommonApiCallback<T> implements Callback <T>{
     // ui thread handler
     public Handler mHandler;
     // 请求标识
-    private String requestId;
+    public String requestId;
     // 异常
     public final static String EXCEPTION = "exception";
     // 空数据
@@ -118,9 +118,14 @@ public class CommonApiCallback<T> implements Callback <T>{
                 default:
                     break;
             }
+            // 兼容数据
+            compatibleData();
             return;
         }
     }
+
+    // 兼容数据
+    public abstract void compatibleData();
 
     /**
      * 数据格式三处理

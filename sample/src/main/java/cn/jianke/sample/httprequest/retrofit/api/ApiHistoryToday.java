@@ -49,7 +49,7 @@ public class ApiHistoryToday {
                                     Activity activity,
                       ApiCallback<HistoryTodayResponse> callback){
         Call<HistoryTodayResponse> mCall =  mApiStore.getHistoryTodayData(month, day, key);
-        mCall.enqueue(new CommonApiCallback<HistoryTodayResponse>(callback, activity,
+        mCall.enqueue(new cn.jianke.sample.httprequest.retrofit.api.JkRetrofitCallBack(callback, activity,
                 HistoryTodayResponse.class, CommonApiCallback.REQUEST_ID_ONE));
     }
 

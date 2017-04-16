@@ -53,7 +53,7 @@ public class APiTest {
     public void call(String phone, String loginName, String timestamp, String sign,
                      Activity activity, ApiCallback<BaseResponse> callback){
         Call<BaseResponse> mCall =  mApiStore.call(phone,loginName,timestamp,sign,"9","1");
-        mCall.enqueue(new CommonApiCallback<BaseResponse>(callback, activity,
+        mCall.enqueue(new cn.jianke.sample.httprequest.retrofit.api.JkRetrofitCallBack(callback, activity,
                 BaseResponse.class, CommonApiCallback.REQUEST_ID_TWO));
     }
 

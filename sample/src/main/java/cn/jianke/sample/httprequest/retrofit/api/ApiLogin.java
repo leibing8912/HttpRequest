@@ -50,7 +50,7 @@ public class ApiLogin {
     public void login(String username, String password,
                       Activity activity, ApiCallback<LoginResponse> callback){
         Call<LoginResponse> mCall =  mApiStore.login(URLEncoder.encode(username), password);
-        mCall.enqueue(new CommonApiCallback<LoginResponse>(callback, activity,
+        mCall.enqueue(new cn.jianke.sample.httprequest.retrofit.api.JkRetrofitCallBack(callback, activity,
                 LoginResponse.class, CommonApiCallback.REQUEST_ID_THREE));
     }
 

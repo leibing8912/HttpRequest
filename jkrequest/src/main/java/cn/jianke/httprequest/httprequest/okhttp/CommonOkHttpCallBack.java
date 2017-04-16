@@ -22,7 +22,7 @@ import okhttp3.Response;
  * @author: leibing
  * @createTime: 2017/3/16
  */
-public class CommonOkHttpCallBack<T> implements Callback {
+public abstract class CommonOkHttpCallBack<T> implements Callback {
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
@@ -72,7 +72,7 @@ public class CommonOkHttpCallBack<T> implements Callback {
     // ui thread handler
     public Handler mHandler;
     // 请求标识
-    private String requestId;
+    public String requestId;
 
     /**
      * Constructor
@@ -156,9 +156,14 @@ public class CommonOkHttpCallBack<T> implements Callback {
                 default:
                     break;
             }
+            // 兼容数据
+            compatibleData();
             return;
         }
     }
+
+    // 兼容数据
+    public abstract void compatibleData();
 
     /**
      * 数据格式三处理
