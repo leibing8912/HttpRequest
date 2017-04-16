@@ -42,7 +42,7 @@ public class HistoryTodayActivity extends BaseActivity {
     private String day = "1";
     // key
     private String key = "2df3bf9577484943b20a59321de0c707";
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

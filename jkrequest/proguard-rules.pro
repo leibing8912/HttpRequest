@@ -15,3 +15,18 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+# gson specific classes
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-dontwarn com.google.gson.**
+-keep class com.google.gson.** {*;}
+-keep class com.google.gson.JsonObject { *; }
+-keepattributes Signature
+# okio
+-dontwarn okio.**
+-keep class okio.** { *; }
+# retrofit2
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
