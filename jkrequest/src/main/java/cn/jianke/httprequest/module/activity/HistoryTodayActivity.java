@@ -1,10 +1,10 @@
 package cn.jianke.httprequest.module.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.HashMap;
 import cn.jianke.httprequest.R;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.api.ApiHistoryToday;
@@ -26,6 +26,8 @@ import static cn.jianke.httprequest.module.activity.MainActivity.NETWORK_FRAMEWO
  * @createTime: 2016/11/10
  */
 public class HistoryTodayActivity extends BaseActivity {
+    // 日志标识
+    private final static String TAG = "HistoryTodayActivity";
     // listView
     private ListView historyTodayLv;
     // 数据源
@@ -40,7 +42,7 @@ public class HistoryTodayActivity extends BaseActivity {
     private String day = "1";
     // key
     private String key = "2df3bf9577484943b20a59321de0c707";
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +71,10 @@ public class HistoryTodayActivity extends BaseActivity {
         switch (type){
             case NETWORK_FRAMEWORK_TYPE_RETROFIT:
                 // retrofit
-                System.out.println("xxxxxxxxxxxx retrofit");
                 requestByRetrofit();
                 break;
             case NETWORK_FRAMEWORK_TYPE_OKHTTP:
                 // okhttp
-                System.out.println("xxxxxxxxxxxx okhttp");
                 requestByOkhttp();
                 break;
             default:
@@ -91,6 +91,7 @@ public class HistoryTodayActivity extends BaseActivity {
      * @return
      */
     private void requestByOkhttp(){
+        Log.e(TAG, "#okhttp request");
         OkHttpRequestUtils.getInstance().requestByGet(RequestUrlManager.HISTORY_TODAY_REQUEST_URL,
                 OkHttpRequestUtils.getInstance().JkRequestParameters(
                         JKOkHttpParamKey.HISTORY_TODAY_PARAM, month, day, key),
@@ -124,6 +125,7 @@ public class HistoryTodayActivity extends BaseActivity {
      * @return
      */
     private void requestByRetrofit(){
+        Log.e(TAG, "#retrofit request");
         // 初始化api
         mApiHistoryToday = new ApiHistoryToday();
         // 请求数据

@@ -1,4 +1,4 @@
-package cn.jianke.httprequest.httprequest.okhttp;
+package cn.jianke.httprequest.httprequest;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -6,63 +6,45 @@ import android.os.Looper;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.httpresponse.BaseResponse;
 import cn.jianke.httprequest.module.AppManager;
 import cn.jianke.httprequest.utils.StringUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * @className: JkOkHttpCallBack
- * @classDescription: okhttp回调
+ * @className: JkApiCallback
+ * @classDescription: 健客网统一Api回调
  * @author: leibing
- * @createTime: 2017/3/16
+ * @createTime: 2016/08/30
  */
-public class JkOkHttpCallBack<T> implements Callback {
+public class JkApiCallback<T> implements Callback <T>{
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
     public static final String REQUEST_ID_ONE = "request_id_one";
     // 请求标识--数据格式二（无需解析数据，直接回调）
     public static final String REQUEST_ID_TWO = "request_id_two";
-    // 请求标识--数据格式三（{"errorcode":"0","errormsg":"成功","info"：obj}）
+    // 请求标识--数据格式三（{"errorcode":"0","errorMsg":"成功","dataInfo"：obj}）
     public static final String REQUEST_ID_THREE = "request_id_three";
-    // 数据解析标识--result
-    public final static String DATA_ANALYSIS_IDENTIFY_RESULT = "result";
-    // 数据解析标识--data
-    public final static String DATA_ANALYSIS_IDENTIFY_DATA = "data";
-    // 数据解析标识--status
-    public final static String DATA_ANALYSIS_IDENTIFY_STATUS = "status";
-    // 数据解析标识--info
-    public final static String DATA_ANALYSIS_IDENTIFY_INFO = "info";
-    // 数据解析标识--errorcode
-    public final static String DATA_ANALYSIS_IDENTIFY_ERRORCODE = "errorcode";
-    // 数据解析标识--errormsg
-    public final static String DATA_ANALYSIS_IDENTIFY_ERRORMSG = "errormsg";
-    // 数据解析标识--msg
-    public final static String DATA_ANALYSIS_IDENTIFY_MSG = "msg";
-    // 数据解析标识--code
-    public final static String DATA_ANALYSIS_IDENTIFY_CODE = "code";
-    // 数据解析标识--success
-    public final static String DATA_ANALYSIS_IDENTIFY_SUCCESS = "success";
     // 数据解析标识--error_code
     public final static String DATA_ANALYSIS_IDENTIFY_ERROR_CODE = "error_code";
     // 数据解析标识--reason
     public final static String DATA_ANALYSIS_IDENTIFY_REASON = "reason";
+    // 数据解析标识--result
+    public final static String DATA_ANALYSIS_IDENTIFY_RESULT = "result";
+    // 数据解析标识--errorcode
+    public final static String DATA_ANALYSIS_IDENTIFY_ERRORCODE = "errorcode";
+    // 数据解析标识--errorMsg
+    public final static String DATA_ANALYSIS_IDENTIFY_ERRORMSG = "errormsg";
+    // 数据解析标识--dataInfo
+    public final static String DATA_ANALYSIS_IDENTIFY_INFO = "info";
     // 状态标识--0
     public final static String STATUS_IDENTIFY_ZORE = "0";
     // 状态标识--1
     public final static String STATUS_IDENTIFY_ONE = "1";
-    // 状态标识--true
-    public final static String STATUS_IDENTIFY_TRUE = "true";
-    // 异常
-    public final static String EXCEPTION = "exception";
-    // 空数据
-    public final static String NULL_DATA  = "nodata";
     // 回调
     private ApiCallback<T> mCallback;
     // 页面弱引用
@@ -73,35 +55,24 @@ public class JkOkHttpCallBack<T> implements Callback {
     public Handler mHandler;
     // 请求标识
     private String requestId;
+    // 异常
+    public final static String EXCEPTION = "exception";
+    // 空数据
+    public final static String NULL_DATA  = "nodata";
 
     /**
      * Constructor
      * @author leibing
-     * @createTime 2017/3/16
-     * @lastModify 2017/3/16
+     * @createTime 2016/08/30
+     * @lastModify 2017/4/11
      * @param mCallback 回调
      * @param activity 页面实例
-     * @return
-     */
-    public JkOkHttpCallBack(ApiCallback<T> mCallback, Activity activity, Class<T> typeCls){
-        this.mCallback = mCallback;
-        activityWeakRef = new WeakReference<Activity>(activity);
-        this.typeCls = typeCls;
-        mHandler = new Handler(Looper.getMainLooper());
-    }
-
-    /**
-     * Constructor
-     * @author leibing
-     * @createTime 2017/3/16
-     * @lastModify 2017/3/16
-     * @param mCallback 回调
-     * @param activity 页面实例
+     * @param typeCls 数据类型
      * @param requestId 请求标识
      * @return
      */
-    public JkOkHttpCallBack(ApiCallback<T> mCallback, Activity activity,
-                            Class<T> typeCls, String requestId){
+    public JkApiCallback(ApiCallback<T> mCallback, Activity activity,
+                         Class<T> typeCls, String requestId){
         this.mCallback = mCallback;
         activityWeakRef = new WeakReference<Activity>(activity);
         this.typeCls = typeCls;
@@ -110,19 +81,11 @@ public class JkOkHttpCallBack<T> implements Callback {
     }
 
     @Override
-    public void onFailure(Call call, IOException e) {
+    public void onResponse(Call<T> call, Response<T> response) {
         if (activityWeakRef == null
-                || activityWeakRef.get() == null)
+                || activityWeakRef.get() == null) {
             return;
-        // 失败回调
-        failCallBack();
-    }
-
-    @Override
-    public void onResponse(Call call, Response response) throws IOException {
-        if (activityWeakRef == null
-                || activityWeakRef.get() == null)
-            return;
+        }
         // 处理是否当前页，如果非当前页则无需回调更新UI
         if (!AppManager.getInstance().isCurrent(activityWeakRef.get())){
             return;
@@ -132,13 +95,12 @@ public class JkOkHttpCallBack<T> implements Callback {
             mCallback.onError(NULL_DATA);
             return;
         }
-        String body = response.body().string();
+        String body = (String) response.body();
         // 无数据回调处理
-        if (body == null){
+        if (StringUtil.isEmpty(body)){
             mCallback.onError(NULL_DATA);
             return;
         }
-        // 根据请求标识解析数据
         if (StringUtil.isNotEmpty(requestId)){
             switch (requestId){
                 case REQUEST_ID_ONE:
@@ -184,8 +146,8 @@ public class JkOkHttpCallBack<T> implements Callback {
                 // Gson解析数据，回调数据
                 baseResponse = (BaseResponse) new Gson().fromJson(info, typeCls);
                 baseResponse.setSuccess(true);
-                baseResponse.setErrormsg(errormsg);
-                baseResponse.setInfo(info);
+                baseResponse.setErrorMsg(errormsg);
+                baseResponse.setDataInfo(info);
                 successCallBack(baseResponse);
             }else {
                 // 请求错误（回调错误信息）
@@ -201,9 +163,9 @@ public class JkOkHttpCallBack<T> implements Callback {
     /**
      * 数据格式二处理
      * @author leibing
-     * @createTime 2017/4/10
-     * @lastModify 2017/4/10
-     * @param body
+     * @createTime 2017/4/11
+     * @lastModify 2017/4/11
+     * @param body 数据字符串
      * @return
      */
     private void requestIdTwoDeal(String body) {
@@ -243,8 +205,8 @@ public class JkOkHttpCallBack<T> implements Callback {
                 BaseResponse baseResponse;
                 baseResponse = (BaseResponse) new Gson().fromJson(data, typeCls);
                 baseResponse.setSuccess(true);
-                baseResponse.setErrormsg(reason);
-                baseResponse.setInfo(data);
+                baseResponse.setErrorMsg(reason);
+                baseResponse.setDataInfo(data);
                 successCallBack(baseResponse);
             }else {
                 // 请求错误（回调错误信息）
@@ -332,19 +294,12 @@ public class JkOkHttpCallBack<T> implements Callback {
         }
     }
 
-    /**
-     * 解决json解析问题
-     * @author leibing
-     * @createTime 2017/3/16
-     * @lastModify 2017/3/16
-     * @param in
-     * @return
-     */
-    private String JSONTokener(String in) {
-        // consume an optional byte order mark (BOM) if it exists
-        if (in != null && in.startsWith("\ufeff")) {
-            in = in.substring(1);
-        }
-        return in;
+    @Override
+    public void onFailure(Call<T> call, Throwable t) {
+        if (activityWeakRef == null
+                || activityWeakRef.get() == null)
+            return;
+        // 失败回调
+        failCallBack();
     }
 }

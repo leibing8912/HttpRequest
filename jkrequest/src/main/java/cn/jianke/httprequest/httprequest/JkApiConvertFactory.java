@@ -41,7 +41,6 @@ public class JkApiConvertFactory extends Converter.Factory{
                 reString = value.string();
                 return (T) reString;
             } catch (Exception e) {
-                System.out.println("xxxxxxxxxxxxxxx ex = " + e.getMessage());
                 e.printStackTrace();
                 return null;
             }

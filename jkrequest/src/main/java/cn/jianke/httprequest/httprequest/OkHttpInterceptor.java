@@ -1,5 +1,6 @@
 package cn.jianke.httprequest.httprequest;
 
+import android.util.Log;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import okhttp3.Connection;
@@ -19,7 +20,9 @@ import okio.BufferedSource;
  * @createTime: 2016/08/30
  */
 public class OkHttpInterceptor implements Interceptor {
-
+    // 日志标识
+    private final static String TAG = "OkHttpInterceptor";
+    // utf8
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     @Override
@@ -33,7 +36,7 @@ public class OkHttpInterceptor implements Interceptor {
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
         // 比如: --> POST http://121.40.227.8:8088/api http/1.1
         String requestStartMessage = "--> " + request.method() + ' ' + request.url() + ' ' + protocol;
-        System.out.println("xxxxxxxxxxxx requestStartMessage = " + requestStartMessage);
+        Log.e(TAG, "#requestStartMessage=" + requestStartMessage);
         // 打印 Response
         Response response;
         try {
@@ -43,9 +46,8 @@ public class OkHttpInterceptor implements Interceptor {
         }
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-
         if (bodyEncoded(response.headers())) {
-
+            Log.e(TAG,"#bodyEncoded");
         } else {
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -53,7 +55,7 @@ public class OkHttpInterceptor implements Interceptor {
             Charset charset = UTF8;
             if (contentLength != 0) {
                 // 获取Response的body的字符串 并打印
-                System.out.println("xxxxxxxxxxxx requestStartMessage = " + requestStartMessage);
+//                Log.e(TAG,"#body=" + buffer.readString(charset));
             }
         }
         return response;

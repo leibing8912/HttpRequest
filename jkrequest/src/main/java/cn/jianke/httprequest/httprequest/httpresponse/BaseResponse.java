@@ -14,9 +14,9 @@ public class BaseResponse implements Serializable {
     // 是否成功
     private boolean isSuccess;
     // 数据
-    public String info;
+    public String dataInfo;
     // 错误消息
-    public String errormsg;
+    public String errorMsg;
 
     /**------------------------------------get and set---------------------------------------------
      -----------------------------------------------------------------------------------*/
@@ -29,19 +29,19 @@ public class BaseResponse implements Serializable {
         isSuccess = success;
     }
 
-    public String getInfo() {
-        return info;
+    public String getDataInfo() {
+        return dataInfo;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setDataInfo(String dataInfo) {
+        this.dataInfo = dataInfo;
     }
 
-    public String getErrormsg() {
-        return errormsg;
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
-    public void setErrormsg(String errormsg) {
-        this.errormsg = errormsg;
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }
