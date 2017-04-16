@@ -18,8 +18,8 @@ package cn.jianke.httprequest.httprequest.api;
 
 import java.net.URLEncoder;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.JkApiRequest;
-import cn.jianke.httprequest.httprequest.JkApiCallback;
+import cn.jianke.httprequest.httprequest.CommonApiRequest;
+import cn.jianke.httprequest.httprequest.CommonApiCallback;
 import cn.jianke.sample.httprequest.httpresponse.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;

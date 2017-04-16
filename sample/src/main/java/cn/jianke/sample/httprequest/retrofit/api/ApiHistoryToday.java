@@ -2,8 +2,8 @@ package cn.jianke.sample.httprequest.retrofit.api;
 
 import android.app.Activity;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.JkApiCallback;
-import cn.jianke.httprequest.httprequest.JkApiRequest;
+import cn.jianke.httprequest.httprequest.CommonApiCallback;
+import cn.jianke.httprequest.httprequest.CommonApiRequest;
 import cn.jianke.sample.httprequest.httpresponse.HistoryTodayResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -31,7 +31,7 @@ public class ApiHistoryToday {
      */
     public ApiHistoryToday() {
         // 初始化api
-        mApiStore = JkApiRequest.getInstance().create(ApiStore.class, BASE_URL);
+        mApiStore = CommonApiRequest.getInstance().create(ApiStore.class, BASE_URL);
     }
 
     /**
@@ -49,8 +49,8 @@ public class ApiHistoryToday {
                                     Activity activity,
                       ApiCallback<HistoryTodayResponse> callback){
         Call<HistoryTodayResponse> mCall =  mApiStore.getHistoryTodayData(month, day, key);
-        mCall.enqueue(new JkApiCallback<HistoryTodayResponse>(callback, activity,
-                HistoryTodayResponse.class, JkApiCallback.REQUEST_ID_ONE));
+        mCall.enqueue(new CommonApiCallback<HistoryTodayResponse>(callback, activity,
+                HistoryTodayResponse.class, CommonApiCallback.REQUEST_ID_ONE));
     }
 
     /**

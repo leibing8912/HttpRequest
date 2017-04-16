@@ -4,8 +4,8 @@ import android.app.Activity;
 import java.net.URLEncoder;
 import cn.jianke.httprequest.BuildConfig;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.JkApiCallback;
-import cn.jianke.httprequest.httprequest.JkApiRequest;
+import cn.jianke.httprequest.httprequest.CommonApiCallback;
+import cn.jianke.httprequest.httprequest.CommonApiRequest;
 import cn.jianke.sample.httprequest.httpresponse.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -33,7 +33,7 @@ public class ApiLogin {
      */
     public ApiLogin() {
         // 初始化api
-        mApiStore = JkApiRequest.getInstance().create(ApiStore.class, REQUEST_HTTP_URL);
+        mApiStore = CommonApiRequest.getInstance().create(ApiStore.class, REQUEST_HTTP_URL);
     }
 
     /**
@@ -50,8 +50,8 @@ public class ApiLogin {
     public void login(String username, String password,
                       Activity activity, ApiCallback<LoginResponse> callback){
         Call<LoginResponse> mCall =  mApiStore.login(URLEncoder.encode(username), password);
-        mCall.enqueue(new JkApiCallback<LoginResponse>(callback, activity,
-                LoginResponse.class, JkApiCallback.REQUEST_ID_THREE));
+        mCall.enqueue(new CommonApiCallback<LoginResponse>(callback, activity,
+                LoginResponse.class, CommonApiCallback.REQUEST_ID_THREE));
     }
 
     /**

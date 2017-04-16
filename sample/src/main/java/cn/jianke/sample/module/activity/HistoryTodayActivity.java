@@ -5,11 +5,11 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import cn.jianke.httprequest.R;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.okhttp.JkOkHttpCallBack;
+import cn.jianke.httprequest.httprequest.okhttp.CommonOkHttpCallBack;
 import cn.jianke.httprequest.httprequest.okhttp.OkHttpRequestUtils;
 import cn.jianke.httprequest.utils.StringUtil;
+import cn.jianke.sample.R;
 import cn.jianke.sample.httprequest.retrofit.api.ApiHistoryToday;
 import cn.jianke.sample.httprequest.httpresponse.HistoryTodayResponse;
 import cn.jianke.sample.httprequest.okhttp.JKOkHttpParamKey;
@@ -95,7 +95,7 @@ public class HistoryTodayActivity extends BaseActivity {
         OkHttpRequestUtils.getInstance().requestByGet(RequestUrlManager.HISTORY_TODAY_REQUEST_URL,
                 OkHttpRequestUtils.getInstance().JkRequestParameters(
                         JKOkHttpParamKey.HISTORY_TODAY_PARAM, month, day, key),
-                HistoryTodayResponse.class, JkOkHttpCallBack.REQUEST_ID_ONE, this,
+                HistoryTodayResponse.class, CommonOkHttpCallBack.REQUEST_ID_ONE, this,
                 new ApiCallback() {
                     @Override
                     public void onSuccess(Object response) {

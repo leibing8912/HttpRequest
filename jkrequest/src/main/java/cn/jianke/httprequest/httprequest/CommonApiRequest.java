@@ -4,14 +4,14 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
- * @className:JkApiRequest
- * @classDescription:网络请求
+ * @className:CommonApiRequest
+ * @classDescription: retrofit api request
  * @author: leibing
- * @createTime: 2016/8/30
+ * @createTime: 2017/4/16
  */
-public class JkApiRequest {
+public class CommonApiRequest {
     // sington
-    private static JkApiRequest instance;
+    private static CommonApiRequest instance;
     // Retrofit object
     private Retrofit retrofit;
 
@@ -23,7 +23,7 @@ public class JkApiRequest {
      * @param
      * @return
      */
-    private JkApiRequest(){
+    private CommonApiRequest(){
     }
 
     /**
@@ -34,9 +34,9 @@ public class JkApiRequest {
      * @param
      * @return
      */
-    public static JkApiRequest getInstance(){
+    public static CommonApiRequest getInstance(){
         if (instance == null){
-            instance = new JkApiRequest();
+            instance = new CommonApiRequest();
         }
         return instance;
     }
@@ -55,7 +55,7 @@ public class JkApiRequest {
                 .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(JkApiConvertFactory.create())
+                .addConverterFactory(CommonApiConvertFactory.create())
                 .client(client)
                 .build();
         return retrofit.create(service);

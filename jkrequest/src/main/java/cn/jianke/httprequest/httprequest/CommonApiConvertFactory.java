@@ -9,22 +9,22 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
- * @className: JkApiConvertFactory
+ * @className: CommonApiConvertFactory
  * @classDescription: this converter decode the response.
  * @author: leibing
- * @createTime: 2016/8/30
+ * @createTime: 2017/4/16
  */
-public class JkApiConvertFactory extends Converter.Factory{
+public class CommonApiConvertFactory extends Converter.Factory{
 
-    public static JkApiConvertFactory create() {
+    public static CommonApiConvertFactory create() {
         return create(new Gson());
     }
 
-    public static JkApiConvertFactory create(Gson gson) {
-        return new JkApiConvertFactory(gson);
+    public static CommonApiConvertFactory create(Gson gson) {
+        return new CommonApiConvertFactory(gson);
     }
 
-    private JkApiConvertFactory(Gson gson) {
+    private CommonApiConvertFactory(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
     }
 

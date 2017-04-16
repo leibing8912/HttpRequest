@@ -90,7 +90,7 @@ public class OkHttpRequestUtils {
         Call mCall = mOkHttpClient.newCall(mRequest);
 
         // start request
-        mCall.enqueue(new JkOkHttpCallBack<>(callBack, activity, responseCls));
+        mCall.enqueue(new CommonOkHttpCallBack<>(callBack, activity, responseCls));
     }
 
     /**
@@ -129,7 +129,7 @@ public class OkHttpRequestUtils {
         Call mCall = mOkHttpClient.newCall(mRequest);
 
         // start request
-        mCall.enqueue(new JkOkHttpCallBack<>(callBack, activity, responseCls, requestId));
+        mCall.enqueue(new CommonOkHttpCallBack<>(callBack, activity, responseCls, requestId));
     }
 
     /**
@@ -162,7 +162,7 @@ public class OkHttpRequestUtils {
         // create call instance
         Call mCall= mOkHttpClient.newCall(request);
         // start request
-        mCall.enqueue(new JkOkHttpCallBack(callBack, activity, responseCls));
+        mCall.enqueue(new CommonOkHttpCallBack(callBack, activity, responseCls));
     }
 
     /**
@@ -197,7 +197,7 @@ public class OkHttpRequestUtils {
         // create call instance
         Call mCall= mOkHttpClient.newCall(request);
         // start request
-        mCall.enqueue(new JkOkHttpCallBack(callBack, activity, responseCls, requestId));
+        mCall.enqueue(new CommonOkHttpCallBack(callBack, activity, responseCls, requestId));
     }
 
     /**
