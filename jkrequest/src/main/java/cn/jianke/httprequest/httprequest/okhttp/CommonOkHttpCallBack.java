@@ -154,6 +154,7 @@ public abstract class CommonOkHttpCallBack<T> implements Callback {
             Log.e(TAG, "#" + NULL_DATA);
             return;
         }
+        Log.e(TAG, "#body=" + body);
         // 根据请求标识解析数据
         if (StringUtil.isNotEmpty(requestId)){
             switch (requestId){

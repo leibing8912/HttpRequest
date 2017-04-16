@@ -141,7 +141,7 @@ public abstract class CommonRetrofitCallback<T> implements Callback <T>{
             Log.e(TAG, "#" + REQUESTID_IS_NULL);
         }
     }
-    
+
     // 兼容数据
     public abstract void compatibleData();
 
