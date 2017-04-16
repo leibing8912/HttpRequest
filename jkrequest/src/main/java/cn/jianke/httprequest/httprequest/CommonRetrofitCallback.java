@@ -28,6 +28,8 @@ public abstract class CommonRetrofitCallback<T> implements Callback <T>{
     private final static String ACTIVITY_WEAK_REF_IS_NULL = "activity weak ref is null";
     // 回调更新页面非当前页面
     private final static String UPDATE_UI_PAGE_IS_NOT_CURRENT_PAGE = "update ui page is not request current page";
+    // 请求标识为空
+    private final static String REQUESTID_IS_NULL = "requestid_is_null";
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
@@ -118,27 +120,28 @@ public abstract class CommonRetrofitCallback<T> implements Callback <T>{
                     // 数据格式一处理
                     Log.e(TAG, "#requestId=" + REQUEST_ID_ONE);
                     requestIdOneDeal(body);
-                    break;
+                    return;
                 case REQUEST_ID_TWO:
                     // 数据格式二处理
                     Log.e(TAG, "#requestId=" + REQUEST_ID_TWO);
                     requestIdTwoDeal(body);
-                    break;
+                    return;
                 case REQUEST_ID_THREE:
                     // 数据格式三处理
                     Log.e(TAG, "#requestId=" + REQUEST_ID_THREE);
                     requestIdThreeDeal(body);
-                    break;
+                    return;
                 default:
                     break;
             }
             Log.e(TAG, "#are you compatible data ?");
             // 兼容数据
             compatibleData();
-            return;
+        }else {
+            Log.e(TAG, "#" + REQUESTID_IS_NULL);
         }
     }
-
+    
     // 兼容数据
     public abstract void compatibleData();
 

@@ -2,7 +2,7 @@ package cn.jianke.sample.httprequest.retrofit.api;
 
 import android.app.Activity;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.CommonApiCallback;
+import cn.jianke.httprequest.httprequest.CommonRetrofitCallback;
 
 /**
  * @className: JkRetrofitCallBack
@@ -10,7 +10,7 @@ import cn.jianke.httprequest.httprequest.CommonApiCallback;
  * @author: leibing
  * @createTime: 2017/4/16
  */
-public class JkRetrofitCallBack extends CommonApiCallback{
+public class JkRetrofitCallBack extends CommonRetrofitCallback{
 
     /**
      * Constructor

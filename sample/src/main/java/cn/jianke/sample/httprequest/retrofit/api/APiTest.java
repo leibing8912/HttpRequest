@@ -3,8 +3,8 @@ package cn.jianke.sample.httprequest.retrofit.api;
 import android.app.Activity;
 import cn.jianke.httprequest.BuildConfig;
 import cn.jianke.httprequest.httprequest.ApiCallback;
-import cn.jianke.httprequest.httprequest.CommonApiCallback;
 import cn.jianke.httprequest.httprequest.CommonApiRequest;
+import cn.jianke.httprequest.httprequest.CommonRetrofitCallback;
 import cn.jianke.httprequest.httprequest.httpresponse.BaseResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -54,7 +54,7 @@ public class APiTest {
                      Activity activity, ApiCallback<BaseResponse> callback){
         Call<BaseResponse> mCall =  mApiStore.call(phone,loginName,timestamp,sign,"9","1");
         mCall.enqueue(new cn.jianke.sample.httprequest.retrofit.api.JkRetrofitCallBack(callback, activity,
-                BaseResponse.class, CommonApiCallback.REQUEST_ID_TWO));
+                BaseResponse.class, CommonRetrofitCallback.REQUEST_ID_TWO));
     }
 
     /**
