@@ -1,30 +1,32 @@
-apply plugin: 'com.android.application'
+apply from: "${rootProject.rootDir}/common_config.gradle"
+if(project.ext.isLib){
+    apply plugin: 'com.android.library'
+    apply from: 'fat-aar.gradle'
+}else {
+    apply plugin: 'com.android.application'
+}
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion project.ext.compileSdkVersion
+
+    buildToolsVersion project.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "cn.jianke.httprequest"
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        if (!project.ext.isLib) {
+            applicationId project.ext.applicationId
+        }
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        versionCode project.ext.versionCode
+        versionName project.ext.versionName
     }
     buildTypes {
         buildTypes {
-            debug {
-                buildConfigField("String", "API_URL", "\"http://askapi.jianke.com/\"")
-                buildConfigField("boolean", "ISRELEASE", "false")
-            }
-            beta {
-                buildConfigField("String", "API_URL", "\"http://172.17.30.211:8080/mbm-doctor-api/\"")
-                buildConfigField("boolean", "ISRELEASE", "false")
-            }
             release {
                 // 是否进行混淆打包
-                minifyEnabled false
-                shrinkResources false
+                minifyEnabled project.ext.minifyEnabled
+                zipAlignEnabled project.ext.zipAlignEnabled
+                shrinkResources project.ext.shrinkResources
                 // 混淆文件的位置
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
                 buildConfigField("String", "API_URL", "\"https://mbp.jianke.com/mbm/doctor/api/\"")

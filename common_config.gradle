@@ -1,0 +1,18 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+project.ext {
+    // version config
+    compileSdkVersion = 24
+    buildToolsVersion = "24.0.2"
+    minSdkVersion = 15
+    targetSdkVersion = 22
+    applicationId = "cn.jianke.httprequest"
+    versionCode  = 1
+    versionName  = "1.0"
+    // lib config
+    isDebug = false;
+    isLib = true;
+    // proguard config
+    minifyEnabled =  false
+    zipAlignEnabled = false
+    shrinkResources  = false
+}

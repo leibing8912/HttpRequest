@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.httprequest.httprequest.JkApiRequest;
 import cn.jianke.httprequest.httprequest.JkApiCallback;
-import cn.jianke.httprequest.httprequest.httpresponse.LoginResponse;
+import cn.jianke.sample.httprequest.httpresponse.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
