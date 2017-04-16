@@ -1,5 +1,6 @@
 package cn.jianke.httprequest.httprequest;
 
+import android.util.Log;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -15,6 +16,8 @@ import retrofit2.Retrofit;
  * @createTime: 2017/4/16
  */
 public class CommonApiConvertFactory extends Converter.Factory{
+    // 日志标识
+    private final static String TAG = "JkRequest@CommonApiConvertFactory";
 
     public static CommonApiConvertFactory create() {
         return create(new Gson());
@@ -39,6 +42,7 @@ public class CommonApiConvertFactory extends Converter.Factory{
             String reString;
             try {
                 reString = value.string();
+                Log.e(TAG, "#body=" + reString);
                 return (T) reString;
             } catch (Exception e) {
                 e.printStackTrace();

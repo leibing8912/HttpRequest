@@ -3,6 +3,7 @@ package cn.jianke.httprequest.httprequest.okhttp;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,12 @@ import okhttp3.Response;
  * @createTime: 2017/3/16
  */
 public abstract class CommonOkHttpCallBack<T> implements Callback {
+    // 日志标识
+    private final static String TAG = "JkRequest@CommonOkHttpCallBack";
+    // 页面弱引用为空
+    private final static String ACTIVITY_WEAK_REF_IS_NULL = "activity weak ref is null";
+    // 回调更新页面非当前页面
+    private final static String UPDATE_UI_PAGE_IS_NOT_CURRENT_PAGE = "update ui page is not request current page";
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
@@ -112,30 +119,37 @@ public abstract class CommonOkHttpCallBack<T> implements Callback {
     @Override
     public void onFailure(Call call, IOException e) {
         if (activityWeakRef == null
-                || activityWeakRef.get() == null)
+                || activityWeakRef.get() == null) {
+            Log.e(TAG, "#onFailure#" + ACTIVITY_WEAK_REF_IS_NULL);
             return;
+        }
         // 失败回调
         failCallBack();
     }
-
+    
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         if (activityWeakRef == null
-                || activityWeakRef.get() == null)
+                || activityWeakRef.get() == null) {
+            Log.e(TAG, "#" + ACTIVITY_WEAK_REF_IS_NULL);
             return;
+        }
         // 处理是否当前页，如果非当前页则无需回调更新UI
         if (!AppManager.getInstance().isCurrent(activityWeakRef.get())){
+            Log.e(TAG, "#" + UPDATE_UI_PAGE_IS_NOT_CURRENT_PAGE);
             return;
         }
         // 若数据为空则回调返回
         if (response == null || response.body() == null) {
             mCallback.onError(NULL_DATA);
+            Log.e(TAG, "#" + NULL_DATA);
             return;
         }
         String body = response.body().string();
         // 无数据回调处理
         if (body == null){
             mCallback.onError(NULL_DATA);
+            Log.e(TAG, "#" + NULL_DATA);
             return;
         }
         // 根据请求标识解析数据
@@ -143,19 +157,23 @@ public abstract class CommonOkHttpCallBack<T> implements Callback {
             switch (requestId){
                 case REQUEST_ID_ONE:
                     // 数据格式一处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_ONE);
                     requestIdOneDeal(body);
                     break;
                 case REQUEST_ID_TWO:
                     // 数据格式二处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_TWO);
                     requestIdTwoDeal(body);
                     break;
                 case REQUEST_ID_THREE:
                     // 数据格式三处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_THREE);
                     requestIdThreeDeal(body);
                     break;
                 default:
                     break;
             }
+            Log.e(TAG, "#are you compatible data ?");
             // 兼容数据
             compatibleData();
             return;

@@ -3,6 +3,7 @@ package cn.jianke.httprequest.httprequest;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,12 +16,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @className: CommonApiCallback
+ * @className: CommonRetrofitCallback
  * @classDescription: 统一Api回调
  * @author: leibing
  * @createTime: 2017/4/16
  */
-public abstract class CommonApiCallback<T> implements Callback <T>{
+public abstract class CommonRetrofitCallback<T> implements Callback <T>{
+    // 日志标识
+    private final static String TAG = "JkRequest@CommonRetrofitCallback";
+    // 页面弱引用为空
+    private final static String ACTIVITY_WEAK_REF_IS_NULL = "activity weak ref is null";
+    // 回调更新页面非当前页面
+    private final static String UPDATE_UI_PAGE_IS_NOT_CURRENT_PAGE = "update ui page is not request current page";
     // 添加json标签名称
     public final static String JK_JSON_NAME = "jk_json_name";
     // 请求标识--数据格式一({error_code：0，reason：成功，result：array})
@@ -71,8 +78,8 @@ public abstract class CommonApiCallback<T> implements Callback <T>{
      * @param requestId 请求标识
      * @return
      */
-    public CommonApiCallback(ApiCallback<T> mCallback, Activity activity,
-                             Class<T> typeCls, String requestId){
+    public CommonRetrofitCallback(ApiCallback<T> mCallback, Activity activity,
+                                  Class<T> typeCls, String requestId){
         this.mCallback = mCallback;
         activityWeakRef = new WeakReference<Activity>(activity);
         this.typeCls = typeCls;
@@ -84,40 +91,48 @@ public abstract class CommonApiCallback<T> implements Callback <T>{
     public void onResponse(Call<T> call, Response<T> response) {
         if (activityWeakRef == null
                 || activityWeakRef.get() == null) {
+            Log.e(TAG, "#" + ACTIVITY_WEAK_REF_IS_NULL);
             return;
         }
         // 处理是否当前页，如果非当前页则无需回调更新UI
         if (!AppManager.getInstance().isCurrent(activityWeakRef.get())){
+            Log.e(TAG, "#" + UPDATE_UI_PAGE_IS_NOT_CURRENT_PAGE);
             return;
         }
         // 若数据为空则回调返回
         if (response == null || response.body() == null) {
             mCallback.onError(NULL_DATA);
+            Log.e(TAG, "#" + NULL_DATA);
             return;
         }
         String body = (String) response.body();
         // 无数据回调处理
         if (StringUtil.isEmpty(body)){
             mCallback.onError(NULL_DATA);
+            Log.e(TAG, "#" + NULL_DATA);
             return;
         }
         if (StringUtil.isNotEmpty(requestId)){
             switch (requestId){
                 case REQUEST_ID_ONE:
                     // 数据格式一处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_ONE);
                     requestIdOneDeal(body);
                     break;
                 case REQUEST_ID_TWO:
                     // 数据格式二处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_TWO);
                     requestIdTwoDeal(body);
                     break;
                 case REQUEST_ID_THREE:
                     // 数据格式三处理
+                    Log.e(TAG, "#requestId=" + REQUEST_ID_THREE);
                     requestIdThreeDeal(body);
                     break;
                 default:
                     break;
             }
+            Log.e(TAG, "#are you compatible data ?");
             // 兼容数据
             compatibleData();
             return;
@@ -302,8 +317,10 @@ public abstract class CommonApiCallback<T> implements Callback <T>{
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         if (activityWeakRef == null
-                || activityWeakRef.get() == null)
+                || activityWeakRef.get() == null) {
+            Log.e(TAG, "#onFailure#" + ACTIVITY_WEAK_REF_IS_NULL);
             return;
+        }
         // 失败回调
         failCallBack();
     }

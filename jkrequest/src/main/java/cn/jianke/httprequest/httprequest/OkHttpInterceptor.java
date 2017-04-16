@@ -21,7 +21,7 @@ import okio.BufferedSource;
  */
 public class OkHttpInterceptor implements Interceptor {
     // 日志标识
-    private final static String TAG = "OkHttpInterceptor";
+    private final static String TAG = "JkRequest@OkHttpInterceptor";
     // utf8
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
