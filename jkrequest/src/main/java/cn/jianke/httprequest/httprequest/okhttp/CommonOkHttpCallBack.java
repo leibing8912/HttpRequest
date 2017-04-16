@@ -181,6 +181,9 @@ public abstract class CommonOkHttpCallBack<T> implements Callback {
             compatibleData();
         }else {
             Log.e(TAG, "#" + REQUESTID_IS_NULL);
+            // 数据格式二处理
+            Log.e(TAG, "#requestId=" + REQUEST_ID_TWO);
+            requestIdTwoDeal(body);
         }
     }
 
