@@ -1,12 +1,13 @@
 package cn.jianke.sample.module.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.jianke.httprequest.httprequest.ApiCallback;
 import cn.jianke.sample.R;
+import cn.jianke.sample.httprequest.okhttp.JkOkHttpUpDownFileUtils;
+import cn.jianke.sample.httprequest.okhttp.UpLoadFileCallBack;
 import cn.jianke.sample.httprequest.retrofit.api.ApiLogin;
 import cn.jianke.sample.httprequest.httpresponse.LoginResponse;
 
@@ -16,21 +17,23 @@ import cn.jianke.sample.httprequest.httpresponse.LoginResponse;
  * @author: leibing
  * @createTime: 2016/08/30
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     // 网络框架类型
     public final static String NETWORK_FRAMEWORK_TYPE = "network_framework_type";
     // 网络框架类型--retrofit
     public final static String NETWORK_FRAMEWORK_TYPE_RETROFIT = "network_framework_type_retrofit";
     // 网络框架类型--okhttp
     public final static String NETWORK_FRAMEWORK_TYPE_OKHTTP = "network_framework_type_okhttp";
-    // 登录信息显示
-    private TextView mLoginMsgTv;
-    // Api
-    private ApiLogin mApiLogin;
     // 用户名
     private final static String USERNAME = "18818917198";
     // 密码
     private final static String PASSWORD = "123456";
+    // 下载图片
+    private final static String downloadUrl = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1494052691&di=b87729e343d9a6493299e67966817353&src=http://www.chinanews.com/cr/2013/0623/2549205124.jpg";
+    // 登录信息显示
+    private TextView mLoginMsgTv;
+    // Api
+    private ApiLogin mApiLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,46 +44,78 @@ public class MainActivity extends BaseActivity {
         // 初始化ApiLogin
         mApiLogin = new ApiLogin();
         // onClick
-        findViewById(R.id.btn_request_login_msg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        findViewById(R.id.btn_request_login_msg).setOnClickListener(this);
+        // 历史上的今天(retrofit)
+        findViewById(R.id.btn_history_today_retrofit).setOnClickListener(this);
+        // 历史上的今天（okhttp）
+        findViewById(R.id.btn_history_today_okhttp).setOnClickListener(this);
+        // 下载文件
+        findViewById(R.id.btn_download_file).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Bundle bundle = new Bundle();
+        switch (view.getId()){
+            case R.id.btn_request_login_msg:
+                // 请求登录信息
                 mApiLogin.login(USERNAME, PASSWORD, MainActivity.this,
                         new ApiCallback<LoginResponse>() {
-                    @Override
-                    public void onSuccess(LoginResponse response) {
-                        mLoginMsgTv.setText("login accesstoken : \n" + response.accesstoken);
-                    }
+                            @Override
+                            public void onSuccess(LoginResponse response) {
+                                mLoginMsgTv.setText("login accesstoken : \n" + response.accesstoken);
+                            }
 
-                    @Override
-                    public void onError(String err_msg) {
-                        mLoginMsgTv.setText("error msg : " + err_msg);
-                    }
+                            @Override
+                            public void onError(String err_msg) {
+                                mLoginMsgTv.setText("error msg : " + err_msg);
+                            }
 
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(MainActivity.this, "网络不给力,请检查!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        // 历史上的今天(retrofit)
-        findViewById(R.id.btn_history_today_retrofit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, HistoryTodayActivity.class);
-                intent.putExtra(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_RETROFIT);
-                startActivity(intent);
-            }
-        });
-        // 历史上的今天（okhttp）
-        findViewById(R.id.btn_history_today_okhttp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, HistoryTodayActivity.class);
-                intent.putExtra(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_OKHTTP);
-                startActivity(intent);
-            }
-        });
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(MainActivity.this, "网络不给力,请检查!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                break;
+            case R.id.btn_history_today_retrofit:
+                // 历史上的今天(retrofit)
+                bundle.putString(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_RETROFIT);
+                startTargetActivity(HistoryTodayActivity.class, bundle);
+                break;
+            case R.id.btn_history_today_okhttp:
+                // 历史上的今天（okhttp）
+                bundle.putString(NETWORK_FRAMEWORK_TYPE, NETWORK_FRAMEWORK_TYPE_OKHTTP);
+                startTargetActivity(HistoryTodayActivity.class, bundle);
+                break;
+            case R.id.btn_download_file:
+                // 下载文件
+                JkOkHttpUpDownFileUtils.getInstance().downLoadFile(downloadUrl,
+                        JkOkHttpUpDownFileUtils.getInstance().getSDPath(), new UpLoadFileCallBack() {
+                            @Override
+                            public void onSuccess(String data) {
+                                System.out.println("ddddddd onSuccess data = " + data);
+                            }
+
+                            @Override
+                            public void onFail(String error) {
+                                System.out.println("ddddddd onFail error = " + error);
+                            }
+
+                            @Override
+                            public void onException(Exception e) {
+                                System.out.println("ddddddd onException e = " + e.getMessage());
+                            }
+
+                            @Override
+                            public void onProgress(long total, long current) {
+                                System.out.println("dddddddd onProgress total = "
+                                        + total + "#current = " + current);
+                            }
+                        });
+                break;
+            default:
+                break;
+        }
     }
 }

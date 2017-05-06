@@ -18,7 +18,7 @@ public interface UpLoadFileCallBack {
      *  失败回调
      * @param
      */
-    void onFail();
+    void onFail(String error);
 
     /**
      *  异常回调

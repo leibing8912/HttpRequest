@@ -30,4 +30,11 @@
         android:text="okhttp"
         android:layout_centerInParent="true"
         android:layout_below="@+id/btn_history_today_retrofit"/>
+    <Button
+        android:id="@+id/btn_download_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="download file"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/btn_history_today_okhttp"/>
 </RelativeLayout>

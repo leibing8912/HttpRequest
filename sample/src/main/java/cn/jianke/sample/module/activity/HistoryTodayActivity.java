@@ -67,7 +67,10 @@ public class HistoryTodayActivity extends BaseActivity {
      * @return
      */
     private void requestDataByIntent() {
-        String type = getIntent().getStringExtra(NETWORK_FRAMEWORK_TYPE);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null)
+            return;
+        String type = bundle.getString(NETWORK_FRAMEWORK_TYPE);
         switch (type){
             case NETWORK_FRAMEWORK_TYPE_RETROFIT:
                 // retrofit
