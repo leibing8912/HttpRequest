@@ -176,6 +176,11 @@ Android Studio自动生成序列化UID操作如下:
 * OkHttpRequestUtils管理请求服务；
 * JkOkHttpCallBack管理数据解析以及回调服务；
 
+### 2017.05.06
+* 将retrofit、okhttp基类封装到aar文件
+* okhttp添加JkOkHttpUpDownFileUtils文件上传下载封装
+
+
 ### License
 Copyright 2016 leibing
 
