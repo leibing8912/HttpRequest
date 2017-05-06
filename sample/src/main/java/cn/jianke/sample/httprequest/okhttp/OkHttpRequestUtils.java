@@ -133,6 +133,33 @@ public class OkHttpRequestUtils {
     }
 
     /**
+     * request by post json
+     * @author leibing
+     * @createTime 2017/3/16
+     * @lastModify 2017/3/16
+     * @param url
+     * @param map
+     * @param responseCls
+     * @param requestId
+     * @param activity
+     * @param callBack
+     * @return
+     */
+    public void requestByPostJson(String url,
+                                  HashMap<String, Object> map,
+                                  Class responseCls,
+                                  String requestId,
+                                  Activity activity,
+                                  ApiCallback callBack){
+        // get request
+        Request mRequest = JSONRequestUtils.jsonRequet(url, map);
+        // create call instance
+        Call mCall = mOkHttpClient.newCall(mRequest);
+        // start request
+        mCall.enqueue(new JkOkHttpCallBack(callBack, activity, responseCls, requestId));
+    }
+
+    /**
      * request by get
      * @author leibing
      * @createTime 2017/3/16
