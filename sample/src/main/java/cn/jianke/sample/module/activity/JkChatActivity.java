@@ -138,7 +138,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onMessage(WebSocket webSocket, String string) {
                 System.out.println("ddddddddddddd server onMessage");
-                System.out.println("ddddddddddddd string" + string);
+                System.out.println("ddddddddddddd string:" + string);
                 webSocket.send("response-" + string);
             }
 
