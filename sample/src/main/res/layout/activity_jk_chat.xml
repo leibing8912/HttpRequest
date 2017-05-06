@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_jk_chat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.jianke.sample.module.activity.JkChatActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rly_input"
+        android:fillViewport="true">
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </ScrollView>
+    <RelativeLayout
+        android:id="@+id/rly_input"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:minHeight="50dp">
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="发送"/>
+        <EditText
+            android:id="@+id/edt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/jkchat_shape_et_bg"
+            android:minHeight="48dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_margin="4dp"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/jkchat_shape_et_cursor"
+            android:layout_toLeftOf="@+id/btn_send"/>
+    </RelativeLayout>
+</RelativeLayout>

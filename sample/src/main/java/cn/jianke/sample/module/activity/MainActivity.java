@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     // 密码
     private final static String PASSWORD = "123456";
     // 下载图片
-    private final static String downloadUrl = "http://img2015.zdface.com/20160711/28af37919541e977a4434f6e10719a0f.jpg";
+    private final static String downloadUrl = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1494057730&di=9ffa30b6b828bd57c6005889d02bbfaf&src=http://img2015.zdface.com/20160711/28af37919541e977a4434f6e10719a0f.jpg";
     // 登录信息显示
     private TextView mLoginMsgTv;
     // Api
@@ -51,6 +51,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.btn_history_today_okhttp).setOnClickListener(this);
         // 下载文件
         findViewById(R.id.btn_download_file).setOnClickListener(this);
+        // websocket chat
+        findViewById(R.id.btn_websocket).setOnClickListener(this);
     }
 
     @Override
@@ -113,6 +115,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                                         + total + "#current = " + current);
                             }
                         });
+                break;
+            case R.id.btn_websocket:
+                // websocket chat
+                startTargetActivity(JkChatActivity.class, null);
                 break;
             default:
                 break;
