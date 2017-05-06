@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     // 密码
     private final static String PASSWORD = "123456";
     // 下载图片
-    private final static String downloadUrl = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1494052691&di=b87729e343d9a6493299e67966817353&src=http://www.chinanews.com/cr/2013/0623/2549205124.jpg";
+    private final static String downloadUrl = "http://img2015.zdface.com/20160711/28af37919541e977a4434f6e10719a0f.jpg";
     // 登录信息显示
     private TextView mLoginMsgTv;
     // Api

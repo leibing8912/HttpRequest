@@ -1,6 +1,7 @@
 package cn.jianke.sample.httprequest.okhttp;
 
 import android.app.Activity;
+import android.util.Log;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,6 +20,8 @@ import okhttp3.RequestBody;
  * @createTime: 2017/3/16
  */
 public class OkHttpRequestUtils {
+    // 日志标识
+    private final static String TAG = "JkRequest@OkHttpRequestUtils";
     // 连接超时时间
     public final static int CONNECT_TIMEOUT =60;
     // 读取超时时间
@@ -81,7 +84,7 @@ public class OkHttpRequestUtils {
                 builder.add(entry.getKey(), entry.getValue().toString());
             }
         }
-
+        Log.e(TAG, "#requestByPost url=" + url);
         // create request instance
         RequestBody mRequestBody = builder.build();
         Request mRequest = new Request.Builder().url(url).post(mRequestBody).build();
@@ -120,7 +123,7 @@ public class OkHttpRequestUtils {
                 builder.add(entry.getKey(), entry.getValue().toString());
             }
         }
-
+        Log.e(TAG, "#requestByPost url=" + url);
         // create request instance
         RequestBody mRequestBody = builder.build();
         Request mRequest = new Request.Builder().url(url).post(mRequestBody).build();
@@ -151,6 +154,7 @@ public class OkHttpRequestUtils {
                                   String requestId,
                                   Activity activity,
                                   ApiCallback callBack){
+        Log.e(TAG, "#requestByPostJson url=" + url);
         // get request
         Request mRequest = JSONRequestUtils.jsonRequet(url, map);
         // create call instance
@@ -179,7 +183,7 @@ public class OkHttpRequestUtils {
         // 拼接参数
         if (map != null)
             url = getRequestUrl(url, map);
-        System.out.println("xxxxxxxxxxxxxx url = " + url);
+        Log.e(TAG, "#requestByGet url=" + url);
         // request builder
         Request.Builder requestBuilder = new Request.Builder().url(url);
         // 可以省略，默认是GET请求
@@ -214,7 +218,7 @@ public class OkHttpRequestUtils {
         // 拼接参数
         if (map != null)
             url = getRequestUrl(url, map);
-        System.out.println("xxxxxxxxxxxxxx url = " + url);
+        Log.e(TAG, "#requestByGet url=" + url);
         // request builder
         Request.Builder requestBuilder = new Request.Builder().url(url);
         // 可以省略，默认是GET请求

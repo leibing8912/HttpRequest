@@ -50,7 +50,8 @@ public class OkHttpInterceptor implements Interceptor {
             Log.e(TAG,"#bodyEncoded");
         } else {
             BufferedSource source = responseBody.source();
-            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            // Buffer the entire body.
+            source.request(Long.MAX_VALUE);
             Buffer buffer = source.buffer();
             Charset charset = UTF8;
             if (contentLength != 0) {
