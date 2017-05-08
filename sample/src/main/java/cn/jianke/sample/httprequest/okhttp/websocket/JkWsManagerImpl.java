@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import cn.jianke.httprequest.utils.StringUtil;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -18,6 +19,8 @@ import okio.ByteString;
  * @createTime: 2017/5/8
  */
 public class JkWsManagerImpl implements IJkWsManager{
+    // 日志标识
+    public final static String TAG = "JkRequest@JkWsManagerImpl";
     // 重连间隔时间
     private final static int RECONNECT_INTERVAL_TIME = 10 * 1000;
     // 重连最大间隔时间
@@ -58,36 +61,50 @@ public class JkWsManagerImpl implements IJkWsManager{
             // 取消重连websocket
             cancelReconnect();
             // open status callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                Log.e(TAG, "#onOpen#response=" + response);
                 mJkWsStatusListener.onOpen(response);
+            }
         }
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             // message text callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                Log.e(TAG, "#onMessage#text=" + text);
                 mJkWsStatusListener.onMessage(text);
+            }
         }
 
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
             // message bytes callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                if (bytes != null) {
+                    Log.e(TAG, "#onMessage#bytes=" + bytes.toString());
+                }else {
+                    Log.e(TAG, "#onMessage#bytes");
+                }
                 mJkWsStatusListener.onMessage(bytes);
+            }
         }
 
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
             // closed status callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                Log.e(TAG, "#onMessage#onClosed#code=" + code+"#reason="+ reason);
                 mJkWsStatusListener.onClosed(code, reason);
+            }
         }
 
         @Override
         public void onClosing(WebSocket webSocket, int code, String reason) {
             // closing status callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                Log.e(TAG, "#onMessage#onClosing#code=" + code+"#reason="+ reason);
                 mJkWsStatusListener.onClosing(code, reason);
+            }
         }
 
         @Override
@@ -95,8 +112,10 @@ public class JkWsManagerImpl implements IJkWsManager{
             // 重连websocket
             tryReconnect();
             // failure status callback
-            if (mJkWsStatusListener != null)
+            if (mJkWsStatusListener != null) {
+                Log.e(TAG, "#onMessage#onFailure#t=" + t+"#response="+ response);
                 mJkWsStatusListener.onFailure(t, response);
+            }
         }
     };
 

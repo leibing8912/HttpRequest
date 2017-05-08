@@ -1,12 +1,15 @@
 package cn.jianke.sample.module.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import cn.jianke.httprequest.utils.StringUtil;
 import cn.jianke.sample.R;
-import cn.jianke.sample.httprequest.okhttp.websocket.JkOkHttpWebSocketUtils;
+import cn.jianke.sample.httprequest.okhttp.websocket.JkWsManagerImpl;
+import cn.jianke.sample.httprequest.okhttp.websocket.JkWsStatusListener;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -27,12 +30,14 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
     private TextView msgTv;
     // 消息输入
     private EditText msgEdt;
-    // webSocket
-    private WebSocket mWebSocket = null;
     // websocket链接地址
     private String wsUrl = "ws://tw.sgz88.com:2019/area=上海&staff=&psid=&utype=1&page=1&user=fc2f0224-a0b8-4d27-ad5c-934a578a0591&website=tw&number=3&eng=0&ftype=ios&act=1&refurl=m.jianke.com";
     // 消息内容
     private String msgContent = "";
+    // jk websocket manager implement
+    private JkWsManagerImpl mJkWsManagerImpl;
+    // ui thread handler
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,75 +52,92 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void run() {
                 // init mock server
-//                initMockServer();
+                initMockServer();
                 // init wsUrl
-//                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
-                // init websocket client
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initWebSocket();
-                    }
-                });
+                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
+                // init jk websocket manager
+                initJkWsManager();
             }
         }).start();
     }
 
     /**
-     * init websocket
+     * init jk websocket manager
      * @author leibing
-     * @createTime 2017/5/6
-     * @lastModify 2017/5/6
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
      * @param
      * @return
      */
-    private void initWebSocket() {
-        System.out.println("ddddddddddd wsUrl = " + wsUrl);
-        JkOkHttpWebSocketUtils.getInstance().initWsClient(wsUrl, new WebSocketListener() {
+    private void initJkWsManager(){
+        // new JkWsManagerImpl instance
+        mJkWsManagerImpl = new JkWsManagerImpl.Builder(this)
+                .setWsUrl(wsUrl)
+                .build();
+        // start connect websocket
+        mJkWsManagerImpl.startConnect();
+        // set status listener
+        mJkWsManagerImpl.setJkWsStatusListener(new JkWsStatusListener() {
             @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                mWebSocket = webSocket;
-                System.out.println("ddddddddddddd client onOpen");
-                System.out.println("ddddddddddddd response:" + response);
-                System.out.println("ddddddddddddd response body:" + response.networkResponse());
+            public void onOpen(Response response) {
+
             }
 
             @Override
-            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                System.out.println("ddddddddddddd client onFailure");
-                System.out.println("ddddddddddddd response:" + response);
+            public void onMessage(String text) {
+                if (StringUtil.isNotEmpty(text)){
+                    msgContent = msgContent + "服务器：" + text + "\n";
+                    // 更新ui
+                    updateUi(msgContent);
+                }
             }
 
             @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                System.out.println("ddddddddddddd client onClosed");
-                System.out.println("ddddddddddddd code:" + code + " reason:" + reason);
+            public void onMessage(ByteString bytes) {
+
             }
 
             @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                System.out.println("ddddddddddddd client onClosing");
-                System.out.println("ddddddddddddd code:" + code + " reason:" + reason);
+            public void onReconnect() {
+
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                System.out.println("ddddddddddddd client onMessage");
-                System.out.println("ddddddddddddd bytes:" + bytes.toString());
-                msgContent = msgContent + "服务端：" + bytes.toString() + "\n";
-                if (msgTv != null)
-                    msgTv.setText(msgContent);
+            public void onClosing(int code, String reason) {
+
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                System.out.println("ddddddddddddd client onMessage");
-                System.out.println("ddddddddddddd text:" + text);
-                msgContent = msgContent + "服务端：" + text + "\n";
-                if (msgTv != null)
-                    msgTv.setText(msgContent);
+            public void onClosed(int code, String reason) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t, Response response) {
+
             }
         });
+    }
+
+    /**
+     * 更新ui
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param msgContent 消息内容
+     * @return
+     */
+    private void updateUi(final String msgContent){
+        if (StringUtil.isNotEmpty(msgContent)
+                && msgTv != null
+                && uiHandler != null){
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    msgTv.setText(msgContent);
+                }
+            });
+        }
     }
 
     /**
@@ -132,33 +154,26 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
         mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
-                System.out.println("ddddddddddddd server onOpen");
-                System.out.println("ddddddddddddd response:" + response);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String string) {
-                System.out.println("ddddddddddddd server onMessage");
-                System.out.println("ddddddddddddd string:" + string);
-                webSocket.send("response-" + string);
+                webSocket.send(string);
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
-                System.out.println("ddddddddddddd server onClosing");
-                System.out.println("ddddddddddddd code:" + code + " reason:" + reason);
+
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
-                System.out.println("ddddddddddddd server onClosed");
-                System.out.println("ddddddddddddd code:" + code + " reason:" + reason);
+
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                System.out.println("ddddddddddddd server onFailure");
-                System.out.println("ddddddddddddd response:" + response);
+
             }
         }));
     }
@@ -167,31 +182,16 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_send:
-                sendMsg();
+                if (mJkWsManagerImpl != null){
+                    msgContent = msgContent + "客户端：" + msgEdt.getText().toString() + "\n";
+                    // 更新ui
+                    updateUi(msgContent);
+                    // 发送消息
+                    mJkWsManagerImpl.sendMessage(msgEdt.getText().toString());
+                }
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * 发送数据
-     * @author leibing
-     * @createTime 2017/5/6
-     * @lastModify 2017/5/6
-     * @param
-     * @return
-     */
-    private void sendMsg() {
-        if (msgEdt != null
-                && StringUtil.isNotEmpty(msgEdt.getText().toString())
-                && mWebSocket != null){
-            System.out.println("ddddddddddddd send msg");
-            mWebSocket.send(msgEdt.getText().toString());
-            msgContent = msgContent + "客户端：" + msgEdt.getText().toString() + "\n";
-            if (msgTv != null)
-                msgTv.setText(msgContent);
-            msgEdt.setText("");
         }
     }
 }

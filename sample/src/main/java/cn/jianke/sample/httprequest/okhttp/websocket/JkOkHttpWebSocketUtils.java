@@ -3,7 +3,6 @@ package cn.jianke.sample.httprequest.okhttp.websocket;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
 import cn.jianke.sample.httprequest.okhttp.OkHttpRequestUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
