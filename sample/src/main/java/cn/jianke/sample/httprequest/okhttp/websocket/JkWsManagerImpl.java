@@ -1,0 +1,343 @@
+package cn.jianke.sample.httprequest.okhttp.websocket;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
+import cn.jianke.httprequest.utils.StringUtil;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
+
+/**
+ * @className: JkWsManagerImpl
+ * @classDescription: jk websocket manager implement
+ * @author: leibing
+ * @createTime: 2017/5/8
+ */
+public class JkWsManagerImpl implements IJkWsManager{
+    // 重连间隔时间
+    private final static int RECONNECT_INTERVAL_TIME = 10 * 1000;
+    // 重连最大间隔时间
+    private final static long RECONNECT_MAX_INTERVAL_TIME = 120 * 1000;
+    // 当前连接状态(默认为断开连接)
+    private int mCurrentStatus = JkWsStatus.ConnectStatus.DISCONNECTED;
+    // 是否需要重新连接
+    private boolean isNeedReconnect = true;
+    // 上下文
+    private Context mContext;
+    // ws链接
+    private String wsUrl;
+    // websocket instance
+    private WebSocket mWebSocket;
+    // jk websocket listener
+    private JkWsStatusListener mJkWsStatusListener;
+    // 重连次数
+    private int reconnectCount = 0;
+    // websocket handler(用于重连websocket)
+    private Handler wsHandler = new Handler(Looper.getMainLooper());
+    // 重连runnable
+    private Runnable reconnectRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onReconnect();
+            buildConnect();
+        }
+    };
+    // websocket listener
+    private WebSocketListener mWebSocketListener = new WebSocketListener() {
+        @Override
+        public void onOpen(WebSocket webSocket, Response response) {
+            // assignin websocket
+            mWebSocket = webSocket;
+            // set currentStatus as connected
+            mCurrentStatus = JkWsStatus.ConnectStatus.CONNECTED;
+            // 取消重连websocket
+            cancelReconnect();
+            // open status callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onOpen(response);
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            // message text callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onMessage(text);
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+            // message bytes callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onMessage(bytes);
+        }
+
+        @Override
+        public void onClosed(WebSocket webSocket, int code, String reason) {
+            // closed status callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onClosed(code, reason);
+        }
+
+        @Override
+        public void onClosing(WebSocket webSocket, int code, String reason) {
+            // closing status callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onClosing(code, reason);
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            // 重连websocket
+            tryReconnect();
+            // failure status callback
+            if (mJkWsStatusListener != null)
+                mJkWsStatusListener.onFailure(t, response);
+        }
+    };
+
+    /**
+     * 重连websocket
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param
+     * @return
+     */
+    private void tryReconnect() {
+        // 若不需重连或无网则返回
+        if (!isNeedReconnect || !isNetworkConnected(mContext)) return;
+        // set currentStatus as reconnect
+        mCurrentStatus = JkWsStatus.ConnectStatus.RECONNECT;
+        // 重连延迟
+        long delay = reconnectCount * RECONNECT_INTERVAL_TIME;
+        // 开始重连
+        if (wsHandler != null
+                && reconnectRunnable != null) {
+            wsHandler.postDelayed(reconnectRunnable,
+                    delay > RECONNECT_MAX_INTERVAL_TIME ? RECONNECT_INTERVAL_TIME : delay);
+            reconnectCount++;
+        }
+    }
+
+    /**
+     * 取消重连websocket
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param
+     * @return
+     */
+    private void cancelReconnect() {
+        if (wsHandler != null
+                && reconnectRunnable != null) {
+            wsHandler.removeCallbacks(reconnectRunnable);
+            reconnectCount = 0;
+        }
+    }
+
+    /**
+     * set jk websocket listener
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param mJkWsStatusListener jk websocket listener
+     * @return
+     */
+    public void setJkWsStatusListener(JkWsStatusListener mJkWsStatusListener) {
+        this.mJkWsStatusListener = mJkWsStatusListener;
+    }
+
+    /**
+     * Constructor
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param builder
+     * @return
+     */
+    public JkWsManagerImpl(Builder builder) {
+        mContext = builder.mContext;
+        wsUrl = builder.wsUrl;
+    }
+
+    /**
+     * 检查网络是否连接
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param context
+     * @return
+     */
+    private boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager
+                    .getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 创建websocket连接
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param
+     * @return
+     */
+    private void buildConnect() {
+        // 若当前状态为已连接、正在连接中、无网状态则无需创建websocket连接
+        if (mCurrentStatus == JkWsStatus.ConnectStatus.CONNECTED
+                | mCurrentStatus == JkWsStatus.ConnectStatus.CONNECTING
+                | !isNetworkConnected(mContext))
+            return;
+        // 设置当前状态为正在连接中
+        mCurrentStatus = JkWsStatus.ConnectStatus.CONNECTING;
+        // 初始化websocket
+        initWebSocket();
+    }
+
+    /**
+     * 初始化websocket
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param
+     * @return
+     */
+    private void initWebSocket() {
+        if (StringUtil.isNotEmpty(wsUrl)
+                && mWebSocketListener != null) {
+            JkOkHttpWebSocketUtils.getInstance().initWsClient(wsUrl, mWebSocketListener);
+        }
+    }
+
+    @Override
+    public WebSocket getWebSocket() {
+        return mWebSocket;
+    }
+
+    @Override
+    public void startConnect() {
+        isNeedReconnect = true;
+        // 创建websocket连接
+        buildConnect();
+    }
+
+    @Override
+    public void stopConnect() {
+        isNeedReconnect = false;
+        // 断开websocket连接
+        disconnect();
+    }
+
+    @Override
+    public boolean isWsConnected() {
+        return false;
+    }
+
+    @Override
+    public int getCurrentStatus() {
+        return 0;
+    }
+
+    @Override
+    public boolean sendMessage(String msg) {
+        return false;
+    }
+
+    @Override
+    public boolean sendMessage(ByteString byteString) {
+        return false;
+    }
+
+    /**
+     * 断开websocket连接
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param
+     * @return
+     */
+    private void disconnect() {
+        // 若当前状态为断开连接则返回
+        if (mCurrentStatus == JkWsStatus.ConnectStatus.DISCONNECTED)
+            return;
+        // 取消重连websocket
+        cancelReconnect();
+        // 取消所有请求
+        JkOkHttpWebSocketUtils.getInstance().cancalAllRequest();
+        if (mWebSocket != null) {
+            boolean isClosed = mWebSocket.close(JkWsStatus.StatusCode.NORMAL_CLOSE,
+                    JkWsStatus.StatusTip.NORMAL_CLOSE);
+            // 非正常关闭连接
+            if (!isClosed) {
+                // 回调关闭状态
+                if (mJkWsStatusListener != null)
+                    mJkWsStatusListener.onClosed(JkWsStatus.StatusCode.ABNORMAL_CLOSE,
+                            JkWsStatus.StatusTip.ABNORMAL_CLOSE);
+            }
+        }
+        // set currentStatus as disConnected
+        mCurrentStatus = JkWsStatus.ConnectStatus.DISCONNECTED;
+    }
+
+    /**
+     * @className: Builder
+     * @classDescription: 建造者模式构建
+     * @author: leibing
+     * @createTime: 2017/5/8
+     */
+    public static final class Builder {
+        // 上下文
+        private Context mContext;
+        // ws链接地址
+        private String wsUrl;
+
+        /**
+         * ConStructor
+         * @author leibing
+         * @createTime 2017/5/8
+         * @lastModify 2017/5/8
+         * @param mContext 上下文
+         * @return
+         */
+        public Builder(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        /**
+         * ws链接地址配置
+         * @author leibing
+         * @createTime 2017/5/8
+         * @lastModify 2017/5/8
+         * @param wsUrl ws链接地址
+         * @return
+         */
+        public Builder setWsUrl(String wsUrl) {
+            this.wsUrl = wsUrl;
+            return this;
+        }
+        
+        /**
+         * 构建JkWsManagerImpl对象
+         * @author leibing
+         * @createTime 2017/5/8
+         * @lastModify 2017/5/8
+         * @param
+         * @return
+         */
+        public JkWsManagerImpl build() {
+            return new JkWsManagerImpl(this);
+        }
+    }
+}

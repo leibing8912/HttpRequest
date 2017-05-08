@@ -6,7 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.jianke.httprequest.utils.StringUtil;
 import cn.jianke.sample.R;
-import cn.jianke.sample.httprequest.okhttp.JkOkHttpWebSocketUtils;
+import cn.jianke.sample.httprequest.okhttp.websocket.JkOkHttpWebSocketUtils;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -30,7 +30,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
     // webSocket
     private WebSocket mWebSocket = null;
     // websocket链接地址
-    private String wsUrl = "";
+    private String wsUrl = "ws://tw.sgz88.com:2019/area=上海&staff=&psid=&utype=1&page=1&user=fc2f0224-a0b8-4d27-ad5c-934a578a0591&website=tw&number=3&eng=0&ftype=ios&act=1&refurl=m.jianke.com";
     // 消息内容
     private String msgContent = "";
 
@@ -47,9 +47,9 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void run() {
                 // init mock server
-                initMockServer();
+//                initMockServer();
                 // init wsUrl
-                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
+//                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
                 // init websocket client
                 runOnUiThread(new Runnable() {
                     @Override
@@ -77,6 +77,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                 mWebSocket = webSocket;
                 System.out.println("ddddddddddddd client onOpen");
                 System.out.println("ddddddddddddd response:" + response);
+                System.out.println("ddddddddddddd response body:" + response.networkResponse());
             }
 
             @Override
