@@ -22,7 +22,7 @@ public class JkWsManagerImpl implements IJkWsManager{
     // 日志标识
     public final static String TAG = "JkRequest@JkWsManagerImpl";
     // 重连间隔时间
-    private final static int RECONNECT_INTERVAL_TIME = 10 * 1000;
+    private final static int RECONNECT_INTERVAL_TIME = 5 * 1000;
     // 重连最大间隔时间
     private final static long RECONNECT_MAX_INTERVAL_TIME = 120 * 1000;
     // 当前连接状态(默认为断开连接)
@@ -38,7 +38,7 @@ public class JkWsManagerImpl implements IJkWsManager{
     // jk websocket listener
     private JkWsStatusListener mJkWsStatusListener;
     // 重连次数
-    private int reconnectCount = 0;
+    private int reconnectCount = 1;
     // websocket handler(用于重连websocket)
     private Handler wsHandler = new Handler(Looper.getMainLooper());
     // 重连runnable
@@ -93,7 +93,7 @@ public class JkWsManagerImpl implements IJkWsManager{
         public void onClosed(WebSocket webSocket, int code, String reason) {
             // closed status callback
             if (mJkWsStatusListener != null) {
-                Log.e(TAG, "#onMessage#onClosed#code=" + code+"#reason="+ reason);
+                Log.e(TAG, "#onClosed#code=" + code+"#reason="+ reason);
                 mJkWsStatusListener.onClosed(code, reason);
             }
         }
@@ -102,7 +102,7 @@ public class JkWsManagerImpl implements IJkWsManager{
         public void onClosing(WebSocket webSocket, int code, String reason) {
             // closing status callback
             if (mJkWsStatusListener != null) {
-                Log.e(TAG, "#onMessage#onClosing#code=" + code+"#reason="+ reason);
+                Log.e(TAG, "#onClosing#code=" + code+"#reason="+ reason);
                 mJkWsStatusListener.onClosing(code, reason);
             }
         }
@@ -113,7 +113,7 @@ public class JkWsManagerImpl implements IJkWsManager{
             tryReconnect();
             // failure status callback
             if (mJkWsStatusListener != null) {
-                Log.e(TAG, "#onMessage#onFailure#t=" + t+"#response="+ response);
+                Log.e(TAG, "#onFailure#t=" + t+"#response="+ response);
                 mJkWsStatusListener.onFailure(t, response);
             }
         }
@@ -132,17 +132,24 @@ public class JkWsManagerImpl implements IJkWsManager{
         if (!isNeedReconnect || !isNetworkConnected(mContext)) return;
         // set currentStatus as reconnect
         mCurrentStatus = JkWsStatus.ConnectStatus.RECONNECT;
+        Log.e(TAG, "#tryReconnect#reconnectCount=" + reconnectCount);
         // 重连延迟
         long delay = reconnectCount * RECONNECT_INTERVAL_TIME;
+        Log.e(TAG, "#tryReconnect#delay=" + delay);
         // 开始重连
         if (wsHandler != null
                 && reconnectRunnable != null) {
+            wsHandler.removeCallbacks(reconnectRunnable);
+            reconnectCount++;
             wsHandler.postDelayed(reconnectRunnable,
                     delay > RECONNECT_MAX_INTERVAL_TIME ? RECONNECT_INTERVAL_TIME : delay);
-            reconnectCount++;
+            if (delay > RECONNECT_MAX_INTERVAL_TIME){
+                Log.e(TAG, "#tryReconnect#reset reconnectCount");
+                reconnectCount = 1;
+            }
         }
     }
-
+    
     /**
      * 取消重连websocket
      * @author leibing
@@ -155,7 +162,7 @@ public class JkWsManagerImpl implements IJkWsManager{
         if (wsHandler != null
                 && reconnectRunnable != null) {
             wsHandler.removeCallbacks(reconnectRunnable);
-            reconnectCount = 0;
+            reconnectCount = 1;
         }
     }
 

@@ -52,9 +52,9 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void run() {
                 // init mock server
-                initMockServer();
+//                initMockServer();
                 // init wsUrl
-                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
+//                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
                 // init jk websocket manager
                 initJkWsManager();
             }
