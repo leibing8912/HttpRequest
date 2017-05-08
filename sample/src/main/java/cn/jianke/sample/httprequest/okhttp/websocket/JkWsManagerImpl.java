@@ -221,43 +221,29 @@ public class JkWsManagerImpl implements IJkWsManager{
         }
     }
 
-    @Override
-    public WebSocket getWebSocket() {
-        return mWebSocket;
-    }
-
-    @Override
-    public void startConnect() {
-        isNeedReconnect = true;
-        // 创建websocket连接
-        buildConnect();
-    }
-
-    @Override
-    public void stopConnect() {
-        isNeedReconnect = false;
-        // 断开websocket连接
-        disconnect();
-    }
-
-    @Override
-    public boolean isWsConnected() {
-        return false;
-    }
-
-    @Override
-    public int getCurrentStatus() {
-        return 0;
-    }
-
-    @Override
-    public boolean sendMessage(String msg) {
-        return false;
-    }
-
-    @Override
-    public boolean sendMessage(ByteString byteString) {
-        return false;
+    /**
+     * 发送消息
+     * @author leibing
+     * @createTime 2017/5/8
+     * @lastModify 2017/5/8
+     * @param msg 消息
+     * @return
+     */
+    private boolean sendMsg(Object msg) {
+        boolean isSend = false;
+        if (mWebSocket != null
+                && mCurrentStatus == JkWsStatus.ConnectStatus.CONNECTED) {
+            if (msg instanceof String) {
+                isSend = mWebSocket.send((String) msg);
+            } else if (msg instanceof ByteString) {
+                isSend = mWebSocket.send((ByteString) msg);
+            }
+            // 发送消息失败，尝试重连
+            if (!isSend) {
+                tryReconnect();
+            }
+        }
+        return isSend;
     }
 
     /**
@@ -289,6 +275,45 @@ public class JkWsManagerImpl implements IJkWsManager{
         }
         // set currentStatus as disConnected
         mCurrentStatus = JkWsStatus.ConnectStatus.DISCONNECTED;
+    }
+
+    @Override
+    public WebSocket getWebSocket() {
+        return mWebSocket;
+    }
+
+    @Override
+    public void startConnect() {
+        isNeedReconnect = true;
+        // 创建websocket连接
+        buildConnect();
+    }
+
+    @Override
+    public void stopConnect() {
+        isNeedReconnect = false;
+        // 断开websocket连接
+        disconnect();
+    }
+
+    @Override
+    public boolean isWsConnected() {
+        return mCurrentStatus == JkWsStatus.ConnectStatus.CONNECTED;
+    }
+
+    @Override
+    public int getCurrentStatus() {
+        return mCurrentStatus;
+    }
+
+    @Override
+    public boolean sendMessage(String msg) {
+        return sendMsg(msg);
+    }
+
+    @Override
+    public boolean sendMessage(ByteString byteString) {
+        return sendMsg(byteString);
     }
 
     /**
@@ -327,7 +352,7 @@ public class JkWsManagerImpl implements IJkWsManager{
             this.wsUrl = wsUrl;
             return this;
         }
-        
+
         /**
          * 构建JkWsManagerImpl对象
          * @author leibing
