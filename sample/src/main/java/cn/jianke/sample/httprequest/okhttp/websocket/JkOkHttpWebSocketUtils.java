@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Logger;
-
 import cn.jianke.sample.httprequest.okhttp.OkHttpRequestUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -49,7 +47,7 @@ public class JkOkHttpWebSocketUtils {
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(new AddHeaderInterceptor())
+//                .addInterceptor(new AddHeaderInterceptor())
                 .retryOnConnectionFailure(true)
                 .build();
         this.mLock = new ReentrantLock();
@@ -133,8 +131,7 @@ public class JkOkHttpWebSocketUtils {
             Request original = chain.request();
             // Request customization: add request headers
             Log.e(TAG, "#AddHeaderInterceptor");
-            Request.Builder requestBuilder = original.newBuilder();
-//                    .addHeader("Connection", "close");
+            Request.Builder requestBuilder = original.newBuilder().addHeader("Connection", "close");
             Request request = requestBuilder.build();
             long t1 = System.nanoTime();
             Log.e(TAG, String.format("Sending request %s%s",

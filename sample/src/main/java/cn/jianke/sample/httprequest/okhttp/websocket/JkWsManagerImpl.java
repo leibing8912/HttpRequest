@@ -109,6 +109,7 @@ public class JkWsManagerImpl implements IJkWsManager{
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+
             // 重连websocket
             tryReconnect();
             // failure status callback
@@ -118,6 +119,21 @@ public class JkWsManagerImpl implements IJkWsManager{
             }
         }
     };
+
+    /**
+     * 关闭websocket
+     * @author leibing
+     * @createTime 2017/5/11
+     * @lastModify 2017/5/11
+     * @param code 关闭码
+     * @param reason 关闭原因
+     * @return
+     */
+    public void closeWebSocket(int code,String reason){
+        if (mWebSocket != null){
+            mWebSocket.close(code, reason);
+        }
+    }
 
     /**
      * 重连websocket

@@ -54,8 +54,9 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                 // init mock server
 //                initMockServer();
                 // init wsUrl
-                wsUrl = "ws://121.40.165.18:8088";
+//                wsUrl = "ws://121.40.165.18:8088";
 //                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
+                wsUrl = "ws://172.17.30.65:2019";
                 // init jk websocket manager
                 initJkWsManager();
             }
@@ -189,6 +190,8 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                     updateUi(msgContent);
                     // 发送消息
                     mJkWsManagerImpl.sendMessage(msgEdt.getText().toString());
+                    // 清空消息
+                    msgEdt.setText("");
                 }
                 break;
             default:
@@ -198,8 +201,9 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
-        if (mJkWsManagerImpl != null)
-            mJkWsManagerImpl.cancelReconnect();
+        if (mJkWsManagerImpl != null) {
+            mJkWsManagerImpl.stopConnect();
+        }
         super.onDestroy();
     }
 }
