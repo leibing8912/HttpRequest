@@ -22,7 +22,7 @@ public class JkWsManagerImpl implements IJkWsManager{
     // 日志标识
     public final static String TAG = "JkRequest@JkWsManagerImpl";
     // 重连间隔时间
-    private final static int RECONNECT_INTERVAL_TIME = 5 * 1000;
+    private final static int RECONNECT_INTERVAL_TIME = 10 * 1000;
     // 重连最大间隔时间
     private final static long RECONNECT_MAX_INTERVAL_TIME = 120 * 1000;
     // 当前连接状态(默认为断开连接)
@@ -149,7 +149,7 @@ public class JkWsManagerImpl implements IJkWsManager{
             }
         }
     }
-    
+
     /**
      * 取消重连websocket
      * @author leibing
@@ -158,7 +158,7 @@ public class JkWsManagerImpl implements IJkWsManager{
      * @param
      * @return
      */
-    private void cancelReconnect() {
+    public void cancelReconnect() {
         if (wsHandler != null
                 && reconnectRunnable != null) {
             wsHandler.removeCallbacks(reconnectRunnable);

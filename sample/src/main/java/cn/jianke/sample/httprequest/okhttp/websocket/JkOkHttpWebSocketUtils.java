@@ -1,11 +1,17 @@
 package cn.jianke.sample.httprequest.okhttp.websocket;
 
+import android.util.Log;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
+
 import cn.jianke.sample.httprequest.okhttp.OkHttpRequestUtils;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.WebSocketListener;
 
 /**
@@ -15,6 +21,8 @@ import okhttp3.WebSocketListener;
  * @createTime: 2017/5/6
  */
 public class JkOkHttpWebSocketUtils {
+    // 日志标识
+    public final static String TAG = "JkRequest@JkOkHttpWebSocketUtils";
     // 连接超时时间
     public final static int CONNECT_TIMEOUT =60;
     // 读取超时时间
@@ -41,6 +49,7 @@ public class JkOkHttpWebSocketUtils {
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(new AddHeaderInterceptor())
                 .retryOnConnectionFailure(true)
                 .build();
         this.mLock = new ReentrantLock();
@@ -109,5 +118,32 @@ public class JkOkHttpWebSocketUtils {
     public void cancalAllRequest(){
         if (mOkHttpClient != null)
             mOkHttpClient.dispatcher().cancelAll();
+    }
+
+    /**
+     * @className: AddHeaderInterceptor
+     * @classDescription: add header interceptor
+     * @author: leibing
+     * @createTime: 2017/5/10
+     */
+    static class AddHeaderInterceptor implements Interceptor{
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request original = chain.request();
+            // Request customization: add request headers
+            Log.e(TAG, "#AddHeaderInterceptor");
+            Request.Builder requestBuilder = original.newBuilder();
+//                    .addHeader("Connection", "close");
+            Request request = requestBuilder.build();
+            long t1 = System.nanoTime();
+            Log.e(TAG, String.format("Sending request %s%s",
+                    request.url(),request.headers()));
+            Response response = chain.proceed(request);
+            long t2 = System.nanoTime();
+            Log.e(TAG, String.format("Received response for %s in %.1fms%n%s",
+                    request.url(), (t2 - t1) / 1e6d, response.headers()));
+            return response;
+        }
     }
 }

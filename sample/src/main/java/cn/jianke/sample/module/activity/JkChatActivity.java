@@ -31,7 +31,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
     // 消息输入
     private EditText msgEdt;
     // websocket链接地址
-    private String wsUrl = "ws://tw.sgz88.com:2019/area=上海&staff=&psid=&utype=1&page=1&user=fc2f0224-a0b8-4d27-ad5c-934a578a0591&website=tw&number=3&eng=0&ftype=ios&act=1&refurl=m.jianke.com";
+    private String wsUrl = "ws://tw.sgz88.com:2019/area=kenny&staff=&psid=&utype=1&page=1&user=fc2f0224-a0b8-4d27-ad5c-934a578a0591&website=tw&number=3&eng=0&ftype=android&act=1&refurl=m.jianke.com";
     // 消息内容
     private String msgContent = "";
     // jk websocket manager implement
@@ -54,6 +54,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                 // init mock server
 //                initMockServer();
                 // init wsUrl
+                wsUrl = "ws://121.40.165.18:8088";
 //                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
                 // init jk websocket manager
                 initJkWsManager();
@@ -193,5 +194,12 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mJkWsManagerImpl != null)
+            mJkWsManagerImpl.cancelReconnect();
+        super.onDestroy();
     }
 }
