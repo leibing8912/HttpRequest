@@ -3,6 +3,7 @@ package cn.jianke.sample.module.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import okio.ByteString;
  * @createTime: 2017/5/6
  */
 public class JkChatActivity extends BaseActivity implements View.OnClickListener{
+    // 日志标识
+    private final static String TAG = "JkRequest@JkChatActivity";
     // mock web server
     private static final MockWebServer mockWebServer = new MockWebServer();
     // 消息显示
@@ -56,13 +59,15 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                 // init wsUrl
 //                wsUrl = "ws://121.40.165.18:8088";
 //                wsUrl = "ws://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort() + "/";
-                wsUrl = "ws://172.17.30.65:2019";
+//                wsUrl = "ws://172.17.30.48:2019";
+//                wsUrl = "ws://172.17.30.76:2019/area=kenny&staff=&psid=&utype=1&page=1&user=fc2f0224-a0b8-4d27-ad5c-934a578a0591&website=tw&number=3&eng=0&ftype=android&act=1&refurl=m.jianke.com";
+//                wsUrl = "ws://172.17.30.76:2019/area=%E5%B9%BF%E4%B8%9C%E7%9C%81%E5%B9%BF%E5%B7%9E%E5%B8%82%E8%AE%BF%E5%AE%A2&staff=69c9dab3-4628-46db-b073-c5c0d03b743b&psid=69c9dab3-4628-46db-b073-c5c0d03b743b&utype=1&page=1&user=a8fb7d7b-bc6c-2a08-d3b3-17033778bd41&website=tw&number=2&eng=0&rtype=1&ftype=2&act=1&refurl=tmswt.jianke.com/testgochat3.html";
                 // init jk websocket manager
                 initJkWsManager();
             }
         }).start();
     }
-
+    
     /**
      * init jk websocket manager
      * @author leibing
@@ -72,6 +77,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
      * @return
      */
     private void initJkWsManager(){
+        Log.e(TAG, "#wsUrl=" + wsUrl);
         // new JkWsManagerImpl instance
         mJkWsManagerImpl = new JkWsManagerImpl.Builder(this)
                 .setWsUrl(wsUrl)

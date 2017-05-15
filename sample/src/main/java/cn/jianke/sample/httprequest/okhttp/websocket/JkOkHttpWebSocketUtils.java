@@ -47,7 +47,7 @@ public class JkOkHttpWebSocketUtils {
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-//                .addInterceptor(new AddHeaderInterceptor())
+                .addInterceptor(new AddHeaderInterceptor())
                 .retryOnConnectionFailure(true)
                 .build();
         this.mLock = new ReentrantLock();
@@ -131,7 +131,8 @@ public class JkOkHttpWebSocketUtils {
             Request original = chain.request();
             // Request customization: add request headers
             Log.e(TAG, "#AddHeaderInterceptor");
-            Request.Builder requestBuilder = original.newBuilder().addHeader("Connection", "close");
+            Request.Builder requestBuilder
+                    = original.newBuilder().addHeader("Origin", "http://tw.sgz88.com");
             Request request = requestBuilder.build();
             long t1 = System.nanoTime();
             Log.e(TAG, String.format("Sending request %s%s",
