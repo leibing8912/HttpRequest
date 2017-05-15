@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import cn.jianke.sample.httprequest.okhttp.OkHttpRequestUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -63,7 +62,7 @@ public class JkOkHttpWebSocketUtils {
      */
     public static JkOkHttpWebSocketUtils getInstance(){
         if (instance == null){
-            synchronized (OkHttpRequestUtils.class){
+            synchronized (JkOkHttpWebSocketUtils.class){
                 if (instance == null)
                     instance = new JkOkHttpWebSocketUtils();
             }
