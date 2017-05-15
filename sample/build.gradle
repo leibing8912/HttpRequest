@@ -50,4 +50,6 @@ dependencies {
     compile 'com.squareup.okhttp3:mockwebserver:3.5.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    // html parser library
+    compile 'org.jsoup:jsoup:1.10.2'
 }

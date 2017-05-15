@@ -12,7 +12,7 @@ import cn.jianke.sample.R;
 import cn.jianke.sample.httprequest.okhttp.websocket.JkWsManagerImpl;
 import cn.jianke.sample.httprequest.okhttp.websocket.JkWsStatusListener;
 import cn.jianke.sample.httprequest.okhttp.websocket.bean.JkChatMsgBean;
-import cn.jianke.sample.httprequest.okhttp.websocket.bean.JkChatSendMsg;
+import cn.jianke.sample.httprequest.okhttp.websocket.bean.JkChatMsg;
 import cn.jianke.sample.httprequest.okhttp.websocket.util.JsonUtil;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -98,13 +98,8 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onMessage(String text) {
-                if (StringUtil.isNotEmpty(text)){
-                    msgContent = msgContent + "服务器：" + text + "\n";
-                    // 更新ui
-                    updateUi(msgContent);
-                    // 转json obj
-                    mJkChatMsgBean = JsonUtil.fromJson(text, JkChatMsgBean.class);
-                }
+                // 接收消息
+                updateReceiveMsgUi(text);
             }
 
             @Override
@@ -132,6 +127,29 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
 
             }
         });
+    }
+
+    /**
+      * 更新接收数据ui
+      * @author leibing
+      * @createTime 2017/5/15
+      * @lastModify 2017/5/15
+      * @param
+      * @return
+      */
+    private void updateReceiveMsgUi(String text) {
+        if (StringUtil.isNotEmpty(text)) {
+            // 转json obj
+            mJkChatMsgBean = JsonUtil.fromJson(text, JkChatMsgBean.class);
+            if (StringUtil.isNotEmpty(mJkChatMsgBean.Msg)) {
+                String receiveMsg = JkChatMsg.receiveMsg(mJkChatMsgBean.Msg);
+                if (StringUtil.isNotEmpty(receiveMsg)) {
+                    msgContent = msgContent + "服务器：" + receiveMsg + "\n";
+                    // 更新ui
+                    updateUi(msgContent);
+                }
+            }
+        }
     }
 
     /**
@@ -215,7 +233,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                 break;
         }
     }
-    
+
     /**
       * 发送文本消息
       * @author leibing
@@ -225,7 +243,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
       * @return
       */
     private void sendTxtMsg(String txt){
-        String sendMsg = JkChatSendMsg.sendTxtMsg(mJkChatMsgBean,
+        String sendMsg = JkChatMsg.sendTxtMsg(mJkChatMsgBean,
                 txt);
         System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
         if (StringUtil.isNotEmpty(sendMsg))
@@ -241,7 +259,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
       * @return
       */
     private void sendLinkMsg(String link){
-        String sendMsg = JkChatSendMsg.sendLinkMsg(mJkChatMsgBean,link);
+        String sendMsg = JkChatMsg.sendLinkMsg(mJkChatMsgBean,link);
         System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
         if (StringUtil.isNotEmpty(sendMsg))
             mJkWsManagerImpl.sendMessage(sendMsg);
@@ -256,7 +274,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
      * @return
      */
     private void sendImgMsg(String imgUrl){
-        String sendMsg = JkChatSendMsg.sendImgMsg(mJkChatMsgBean,imgUrl);
+        String sendMsg = JkChatMsg.sendImgMsg(mJkChatMsgBean,imgUrl);
         System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
         if (StringUtil.isNotEmpty(sendMsg))
             mJkWsManagerImpl.sendMessage(sendMsg);
