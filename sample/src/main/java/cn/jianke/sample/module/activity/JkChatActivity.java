@@ -11,6 +11,9 @@ import cn.jianke.httprequest.utils.StringUtil;
 import cn.jianke.sample.R;
 import cn.jianke.sample.httprequest.okhttp.websocket.JkWsManagerImpl;
 import cn.jianke.sample.httprequest.okhttp.websocket.JkWsStatusListener;
+import cn.jianke.sample.httprequest.okhttp.websocket.bean.JkChatMsgBean;
+import cn.jianke.sample.httprequest.okhttp.websocket.bean.JkChatSendMsg;
+import cn.jianke.sample.httprequest.okhttp.websocket.util.JsonUtil;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -41,6 +44,8 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
     private JkWsManagerImpl mJkWsManagerImpl;
     // ui thread handler
     private Handler uiHandler = new Handler(Looper.getMainLooper());
+    // jk chat msg model
+    private JkChatMsgBean mJkChatMsgBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             }
         }).start();
     }
-    
+
     /**
      * init jk websocket manager
      * @author leibing
@@ -97,6 +102,8 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                     msgContent = msgContent + "服务器：" + text + "\n";
                     // 更新ui
                     updateUi(msgContent);
+                    // 转json obj
+                    mJkChatMsgBean = JsonUtil.fromJson(text, JkChatMsgBean.class);
                 }
             }
 
@@ -194,8 +201,12 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
                     msgContent = msgContent + "客户端：" + msgEdt.getText().toString() + "\n";
                     // 更新ui
                     updateUi(msgContent);
-                    // 发送消息
-                    mJkWsManagerImpl.sendMessage(msgEdt.getText().toString());
+                    // 发送文本消息
+//                    sendTxtMsg(msgEdt.getText().toString());
+                    // 发送链接消息
+//                    sendLinkMsg("http://tw.sgz88.com");
+                    // 发送图片消息
+                    sendImgMsg("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1494842480987&di=211f7c40d8e336692bcd393dc38e5174&imgtype=0&src=http%3A%2F%2Fimg2015.zdface.com%2F20160711%2F28af37919541e977a4434f6e10719a0f.jpg");
                     // 清空消息
                     msgEdt.setText("");
                 }
@@ -203,6 +214,52 @@ public class JkChatActivity extends BaseActivity implements View.OnClickListener
             default:
                 break;
         }
+    }
+    
+    /**
+      * 发送文本消息
+      * @author leibing
+      * @createTime 2017/5/15
+      * @lastModify 2017/5/15
+      * @param txt 文本
+      * @return
+      */
+    private void sendTxtMsg(String txt){
+        String sendMsg = JkChatSendMsg.sendTxtMsg(mJkChatMsgBean,
+                txt);
+        System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
+        if (StringUtil.isNotEmpty(sendMsg))
+            mJkWsManagerImpl.sendMessage(sendMsg);
+    }
+
+    /**
+      * 发送链接消息
+      * @author leibing
+      * @createTime 2017/5/15
+      * @lastModify 2017/5/15
+      * @param link 链接
+      * @return
+      */
+    private void sendLinkMsg(String link){
+        String sendMsg = JkChatSendMsg.sendLinkMsg(mJkChatMsgBean,link);
+        System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
+        if (StringUtil.isNotEmpty(sendMsg))
+            mJkWsManagerImpl.sendMessage(sendMsg);
+    }
+
+    /**
+     * 发送链接消息
+     * @author leibing
+     * @createTime 2017/5/15
+     * @lastModify 2017/5/15
+     * @param imgUrl 图片链接
+     * @return
+     */
+    private void sendImgMsg(String imgUrl){
+        String sendMsg = JkChatSendMsg.sendImgMsg(mJkChatMsgBean,imgUrl);
+        System.out.println("ddddddddddddddd sendMsg = " + sendMsg);
+        if (StringUtil.isNotEmpty(sendMsg))
+            mJkWsManagerImpl.sendMessage(sendMsg);
     }
 
     @Override
