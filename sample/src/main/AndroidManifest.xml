@@ -7,8 +7,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".module.activity.MainActivity">
+        android:theme="@style/AppTheme"
+        android:name=".module.ShareApplication">
+        <activity android:name=".module.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,14 +17,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".module.activity.HistoryTodayActivity"
+            android:name=".module.historytoday.HistoryTodayActivity"
             android:label="@string/title_activity_history_today"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".module.activity.JkChatActivity"
+            android:name=".module.jkchat.JkChatActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
     </application>
 
 </manifest>

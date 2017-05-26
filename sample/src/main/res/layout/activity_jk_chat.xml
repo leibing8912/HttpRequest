@@ -1,45 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_jk_chat"
+    android:id="@+id/fly_jk_chat_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.jianke.sample.module.activity.JkChatActivity">
-    <ScrollView
+    android:orientation="vertical"
+    tools:context="cn.jianke.sample.module.jkchat.JkChatActivity">
+    <!-- 聊天布局 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rly_input"
-        android:fillViewport="true">
-    <TextView
-        android:id="@+id/tv_msg"
+        android:orientation="vertical">
+    <!-- actionbar -->
+    <include layout="@layout/common_titlebar_lefttitle_with_menu_btn" />
+    <!-- 提示栏 -->
+    <LinearLayout
+        android:id="@+id/ly_jk_chat_tip"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    </ScrollView>
+        android:layout_height="25dp"
+        android:orientation="vertical">
+        <!-- 对话状态提示 -->
+        <include
+            layout="@layout/layout_jk_chat_tip_one"/>
+        <!-- 网络状态差提示 -->
+        <include
+            layout="@layout/layout_jk_chat_tip_two"/>
+    </LinearLayout>
+    <!-- 聊天容器 -->
     <RelativeLayout
-        android:id="@+id/rly_input"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:minHeight="50dp">
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="发送"/>
-        <EditText
-            android:id="@+id/edt_msg"
+        android:layout_height="match_parent">
+        <!-- 聊天对话布局 -->
+        <ListView
+            android:id="@+id/lv_jk_chat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/jkchat_shape_et_bg"
-            android:minHeight="48dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_margin="4dp"
-            android:singleLine="true"
-            android:textCursorDrawable="@drawable/jkchat_shape_et_cursor"
-            android:layout_toLeftOf="@+id/btn_send"/>
+            android:divider="@null"
+            android:listSelector="#00000000"
+            android:layout_above="@+id/ly_bottom"
+            android:paddingBottom="20dp"/>
+        <!-- 底部固定布局（包括发送消息、再次咨询、图片选择） -->
+        <LinearLayout
+            android:id="@+id/ly_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/jk_chat_bottom_bg_color"
+            android:layout_alignParentBottom="true">
+            <!-- 分割线 -->
+            <include layout="@layout/include_middle_line"/>
+            <!-- 底部发送消息布局 -->
+            <RelativeLayout
+                android:id="@+id/rly_send_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:orientation="horizontal">
+                <!-- 打开其他功能 -->
+                <ImageView
+                    android:id="@+id/iv_open_other_function"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/jk_chat_add"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignBottom="@+id/edt_send_msg"/>
+                <!-- 消息输入框 -->
+                <EditText
+                    android:id="@+id/edt_send_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_send_msg"
+                    android:background="@drawable/jkchat_shape_et_bg"
+                    android:minHeight="48dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textCursorDrawable="@drawable/jkchat_shape_et_cursor"
+                    android:layout_toRightOf="@+id/iv_open_other_function"/>
+                <!-- 发送消息按钮 -->
+                <Button
+                    android:id="@+id/btn_send_msg"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:text="发送"
+                    android:textSize="16sp"
+                    android:background="@drawable/round_shape_blue_white_btn"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/edt_send_msg"/>
+            </RelativeLayout>
+            <!-- 更多功能(选择照片、拍照) -->
+            <LinearLayout
+                android:id="@+id/ly_other_function"
+                android:layout_width="match_parent"
+                android:layout_height="108dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!-- 分割线 -->
+                <include layout="@layout/include_middle_line"/>
+                <!-- 选择照片、拍照 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:gravity="center_vertical">
+                    <!-- 选择照片 -->
+                    <LinearLayout
+                        android:id="@+id/ly_select_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/jk_chat_photo"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="选择照片"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
+                    <!-- 拍照 -->
+                    <LinearLayout
+                        android:id="@+id/ly_take_photos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/jk_chat_take_a_picture"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="拍照"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- 再次咨询 -->
+            <LinearLayout
+                android:id="@+id/ly_consulting_again"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:visibility="gone">
+                <Button
+                    android:id="@+id/btn_consulting_again"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:text="再次咨询"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:background="@drawable/round_shape_blue_white_btn"/>
+            </LinearLayout>
+            <!-- 评价布局 -->
+            <include layout="@layout/layout_jk_chat_praise"/>
+        </LinearLayout>
     </RelativeLayout>
-</RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

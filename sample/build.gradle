@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
@@ -6,11 +8,10 @@ android {
 
     defaultConfig {
         applicationId "cn.jianke.sample"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -18,14 +19,20 @@ android {
         debug {
             buildConfigField("String", "API_URL", "\"http://askapi.jianke.com/\"")
             buildConfigField("boolean", "ISRELEASE", "false")
+            // 是否打印请求日志
+            buildConfigField("boolean", "IS_PRINT_REQUEST_LOG", "true")
         }
         beta {
             buildConfigField("String", "API_URL", "\"http://172.17.30.211:8080/mbm-doctor-api/\"")
             buildConfigField("boolean", "ISRELEASE", "false")
+            // 是否打印请求日志
+            buildConfigField("boolean", "IS_PRINT_REQUEST_LOG", "true")
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 是否打印请求日志
+            buildConfigField("boolean", "IS_PRINT_REQUEST_LOG", "true")
         }
     }
 }
@@ -52,4 +59,10 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     // html parser library
     compile 'org.jsoup:jsoup:1.10.2'
+    // 图片加载库采用Glide框架
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    //butterknife注解框架
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

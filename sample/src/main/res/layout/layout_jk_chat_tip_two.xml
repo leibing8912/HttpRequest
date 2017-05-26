@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_jk_chat_tip_two"
+    android:layout_width="match_parent"
+    android:layout_height="25dp"
+    android:orientation="horizontal"
+    android:background="@color/close_chat_txt_color_red"
+    android:visibility="gone"
+    android:gravity="center">
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/jk_chat_send_failure"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_white"
+        android:text="网络状况不好，请重新尝试！"
+        android:layout_marginLeft="5dp"/>
+</LinearLayout>

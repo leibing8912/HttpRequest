@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_send_drug_msgs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!-- 发送消息时间 -->
+    <TextView
+        android:id="@+id/tv_send_drug_msg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:textSize="13sp"
+        android:layout_marginTop="25dp"
+        android:text="2017-2-25 15:02"
+        android:gravity="center"/>
+    <!-- 发送消息头像、内容 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <!-- 发送消息头像-->
+        <ImageView
+            android:id="@+id/iv_send_drug_msg_head"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_headportrait"
+            android:layout_alignParentRight="true"/>
+        <!-- 发送消息内容（药品头像、名称、功效） -->
+        <LinearLayout
+            android:id="@+id/ly_send_drug_msg"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:minHeight="46dp"
+            android:background="@drawable/item_jk_chat_send_drug_msg_shape"
+            android:layout_toLeftOf="@+id/iv_send_drug_msg_head"
+            android:gravity="center_vertical">
+            <!-- 药品头像 -->
+            <ImageView
+                android:id="@+id/iv_send_drug_msg_drug_head"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_product_defoult" />
+            <!-- 药品名称、功效 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+                <!-- 药品名称 -->
+                <TextView
+                    android:id="@+id/tv_send_drug_msg_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/tab_normal"
+                    android:singleLine="true"
+                    android:text="小儿智力糖浆（新汇）"/>
+                <!-- 功效 -->
+                <TextView
+                    android:id="@+id/tv_send_drug_msg_effect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/text_color_black3"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="调补阴阳，开窍益智。用于儿童注意缺陷与多动症。"/>
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ly_send_drug_msg"
+            android:layout_alignBottom="@+id/ly_send_drug_msg"
+            android:layout_alignTop="@+id/ly_send_drug_msg">
+            <!-- 消息发送失败提示 -->
+            <ImageView
+                android:id="@+id/iv_send_drug_msg_fail"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:src="@drawable/jk_chat_send_failure"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

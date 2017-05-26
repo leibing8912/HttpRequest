@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rly_jk_chat_praise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/half_transparent_bg"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <!-- 评价提示、关闭评价按钮 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <!-- 评价提示 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/tab_normal"
+                    android:text="评价"
+                    android:layout_centerInParent="true"/>
+                <!-- 关闭评价按钮 -->
+                <ImageView
+                    android:id="@+id/iv_jk_chat_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/jk_chat_close"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+            <!-- 分割线 -->
+            <include layout="@layout/include_middle_line"/>
+            <!-- 服务评价 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="21dp"
+                android:orientation="horizontal">
+                <!-- 服务评价文案 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_black3"
+                    android:text="服务评价"
+                    android:textSize="13sp"/>
+                <!-- 服务评价星级1 -->
+                <ImageView
+                    android:id="@+id/iv_service_evaluation_star_one"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="10dp"/>
+                <!-- 服务评价星级2 -->
+                <ImageView
+                    android:id="@+id/iv_service_evaluation_star_two"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 服务评价星级3 -->
+                <ImageView
+                    android:id="@+id/iv_service_evaluation_star_three"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 服务评价星级4 -->
+                <ImageView
+                    android:id="@+id/iv_service_evaluation_star_four"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 服务评价星级5 -->
+                <ImageView
+                    android:id="@+id/iv_service_evaluation_star_five"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+            <!-- 回复速度 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="11dp"
+                android:orientation="horizontal">
+                <!-- 回复速度文案 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_black3"
+                    android:text="回复速度"
+                    android:textSize="13sp"/>
+                <!-- 回复速度星级1 -->
+                <ImageView
+                    android:id="@+id/iv_reply_speed_star_one"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="10dp"/>
+                <!-- 回复速度星级2 -->
+                <ImageView
+                    android:id="@+id/iv_reply_speed_star_two"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 回复速度星级3 -->
+                <ImageView
+                    android:id="@+id/iv_reply_speed_star_three"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 回复速度星级4 -->
+                <ImageView
+                    android:id="@+id/iv_reply_speed_star_four"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+                <!-- 回复速度星级5 -->
+                <ImageView
+                    android:id="@+id/iv_reply_speed_star_five"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/jk_chat_star_gray"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+            <!-- 评价输入框 -->
+            <EditText
+                android:id="@+id/edt_praise_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:hint="您的评价是我们不断改进的动力......"
+                android:textSize="13sp"
+                android:gravity="top|left"
+                android:background="@drawable/jkchat_shape_et_bg"
+                android:textCursorDrawable="@drawable/jkchat_shape_et_cursor"
+                android:minHeight="80dp" />
+            <!-- 提交评论按钮 -->
+            <Button
+                android:id="@+id/btn_praise_commit"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:text="提交"
+                android:background="@drawable/selector_btn_blue"/>
+        </LinearLayout>
+</RelativeLayout>

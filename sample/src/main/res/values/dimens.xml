@@ -1,5 +1,110 @@
 <resources>
+
+    <dimen name="textSize_20">20dp</dimen>
+    <dimen name="textSize_28">28dp</dimen>
+    <dimen name="textSize_22">22dp</dimen>
+    <dimen name="textSize_40">40dp</dimen>
+    <dimen name="textSize_18">18dp</dimen>
+    <dimen name="textSize_17">17dp</dimen>
+    <dimen name="textSize_16">16dp</dimen>
+    <dimen name="textSize_14">14dp</dimen>
+    <dimen name="textSize_12">12dp</dimen>
+    <dimen name="textSize_11">11dp</dimen>
+    <dimen name="textSize_10">10dp</dimen>
+    <dimen name="textSize_9">9dp</dimen>
+    <dimen name="margin_Size50">50dip</dimen>
+    <dimen name="margin_Size28">28dip</dimen>
+    <dimen name="margin_Size27">27dip</dimen>
+    <dimen name="margin_Size24">24dip</dimen>
+    <dimen name="margin_Size20">20dip</dimen>
+    <dimen name="margin_Size18">18dip</dimen>
+    <dimen name="margin_Size16">16dip</dimen>
+    <dimen name="margin_Size14">14dip</dimen>
+    <dimen name="margin_Size10">10dip</dimen>
+    <dimen name="margin_Size7">7dip</dimen>
+    <dimen name="margin_Size5">5dip</dimen>
+    <dimen name="margin_Size4">4dip</dimen>
+    <dimen name="margin_Size3">3dip</dimen>
+    <dimen name="margin_Size2">2dip</dimen>
+    <dimen name="margin_Size1">1dip</dimen>
+    <dimen name="margin_Size36px">18dip</dimen>
+    <dimen name="margin_Size66px">33dip</dimen>
+    <dimen name="margin_Size62px">31dip</dimen>
+    <dimen name="margin_Size82px">41dip</dimen>
+    <dimen name="margin_Size33px">16.5dip</dimen>
+    <dimen name="margin_Size32px">16dip</dimen>
+    <dimen name="margin_Size12px">6dip</dimen>
+    <dimen name="width_Size512px">256dip</dimen>
+    <dimen name="height_Size296px">148dip</dimen>
+
+    <dimen name="connerRadius_size">3dp</dimen>
+    <dimen name="connerRadius_size1">70dp</dimen>
+    <dimen name="padding_size_8">8dip</dimen>
+    <dimen name="padding_size_7">7dip</dimen>
+    <dimen name="padding_size_10">10dip</dimen>
+    <dimen name="padding_size_11">11dip</dimen>
+    <dimen name="padding_size_12">12dip</dimen>
+    <dimen name="padding_size_13">13dip</dimen>
+    <dimen name="padding_size_14">14dip</dimen>
+    <dimen name="padding_size_15">15dip</dimen>
+    <dimen name="padding_size_18">18dip</dimen>
+
+    <dimen name="title_height">44dip</dimen>
+    <dimen name="item_height">45dip</dimen>
+    <dimen name="layout_item_height">50dip</dimen>
+    <dimen name="margin_Size8">8dp</dimen>
+    <dimen name="margin_Size9">9dp</dimen>
+    <dimen name="padding_size_5">5dp</dimen>
+    <dimen name="padding_size_6">6dp</dimen>
+    <dimen name="padding_size_2">2dp</dimen>
+    <dimen name="margin_Size70">70dp</dimen>
+    <dimen name="padding_size_20">20dip</dimen>
+    <dimen name="padding_size_25">25dip</dimen>
+    <dimen name="padding_size_30">30dip</dimen>
+    <dimen name="margin_Size40">40dp</dimen>
+    <dimen name="textSize_24">24dp</dimen>
+
+
+    <dimen name="height_top_bar">44dp</dimen>
+    <dimen name="padding_search_bar">5dp</dimen>
+    <dimen name="height_row_weixin">59dp</dimen>
+    <dimen name="size_avatar">50dp</dimen>
+    <dimen name="margin_chat_activity">5dp</dimen>
+    <dimen name="field_textsize">14dp</dimen>
+    <dimen name="field_margin_right">5dp</dimen>
+    <dimen name="call_button_padding_vertical">10dp</dimen>
+    <dimen name="call_button_padding_left">25dp</dimen>
+    <dimen name="call_button_padding_right">25dp</dimen>
+    <dimen name="sidebar_text_size">10dp</dimen>
+    <dimen name="image_thumbnail_size">100dp</dimen>
+    <dimen name="image_thumbnail_spacing">1dp</dimen>
+    <dimen name="padding_size_16">16dp</dimen>
+    <dimen name="padding_size_40">40dp</dimen>
+    <dimen name="margin_Size25">25dp</dimen>
+    <dimen name="margin_Size35">35dp</dimen>
+    <dimen name="margin_Size30">30dp</dimen>
+    <dimen name="margin_Size15">15dp</dimen>
+    <dimen name="textSize_14_fit">14dp</dimen>
+    <dimen name="textSize_12_fit">12px</dimen>
+    <dimen name="margin_Size12">12dp</dimen>
+    <dimen name="margin_Size12.5">12.5dp</dimen>
+    <dimen name="margin_Size13">13dp</dimen>
+    <dimen name="margin_Size6">6dp</dimen>
+    <dimen name="padding_size_4">4dp</dimen>
+    <dimen name="padding_size_3">3dp</dimen>
+    <dimen name="textSize_13">13dp</dimen>
+    <dimen name="textSize_7">7dp</dimen>
+    <dimen name="textSize_6">6dp</dimen>
+    <dimen name="textSize_5">5dp</dimen>
+    <dimen name="textSize_4">4dp</dimen>
+    <dimen name="textSize_8">8dp</dimen>
+    <dimen name="textSize_15">15dp</dimen>
+
+    <dimen name="button_width">100dp</dimen>
+    <dimen name="button_width_small">90dp</dimen>
+    <dimen name="button_height">36dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_jk_chat_tip_one"
+    android:layout_width="match_parent"
+    android:layout_height="25dp"
+    android:background="@color/chat_bg_color_yellow"
+    android:gravity="center">
+    <TextView
+        android:id="@+id/tv_jk_chat_tip_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_yellow"
+        android:text="正在为您转接......"/>
+</LinearLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_drug_information"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+    <!-- 药品图片、名称、功效 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- 药品图片 -->
+        <ImageView
+            android:id="@+id/iv_drug_pic"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_all_class_man_2"/>
+        <!-- 药品名称、功效、价格 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="7dp"
+            android:paddingLeft="10dp">
+            <!-- 药品名称 -->
+            <TextView
+                android:id="@+id/tv_drug_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_black3"
+                android:ellipsize="end"
+                android:maxEms="16"
+                android:singleLine="true"
+                android:text="肾宝片肾宝片肾宝片肾宝片肾宝片肾宝片肾宝片"
+                android:textSize="16sp"/>
+            <!-- 药品功效 -->
+            <TextView
+                android:id="@+id/tv_drug_effect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:ellipsize="end"
+                android:maxEms="16"
+                android:singleLine="true"
+                android:layout_marginTop="7dp"
+                android:text="调和阴阳，温阳补肾，扶正扶正扶正扶正扶正扶正扶正"
+                android:textSize="16sp"/>
+            <!-- 药品价格 -->
+            <TextView
+                android:id="@+id/tv_drug_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/close_chat_txt_color_red"
+                android:textSize="18sp"
+                android:layout_marginTop="12dp"
+                android:text="￥322.00"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 发送链接 -->
+    <Button
+        android:id="@+id/btn_send_drug_link"
+        android:layout_width="135dp"
+        android:layout_height="26dp"
+        android:text="发送链接"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/close_chat_txt_color_red"
+        android:background="@drawable/item_jk_chat_btn_red_bg"/>
+    </LinearLayout>
+</LinearLayout>

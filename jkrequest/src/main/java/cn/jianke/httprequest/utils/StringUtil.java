@@ -1,5 +1,8 @@
 package cn.jianke.httprequest.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @className: StringUtil
  * @classDescription: 字符串操作
@@ -58,5 +61,28 @@ public class StringUtil {
 			}
 		}
 		return object;
+	}
+
+	/**
+	 * 字符串是否数字
+	 * @author leibing
+	 * @createTime 2016/11/17
+	 * @lastModify 2016/11/17
+	 * @param
+	 * @return
+	 */
+	public static boolean strIsNum(String str){
+		// 判断是否为空
+		if (StringUtil.isEmpty(str))
+			return false;
+		// 去空格
+		str = str.trim();
+		// 匹配
+		Pattern pattern = Pattern.compile("[0-9]*");
+		Matcher isNum = pattern.matcher(str);
+		if( !isNum.matches() ) {
+			return false;
+		}
+		return true;
 	}
 }

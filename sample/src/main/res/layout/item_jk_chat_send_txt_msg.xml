@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_send_txt_msg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!-- 发送消息时间 -->
+    <TextView
+        android:id="@+id/tv_send_txt_msg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:textSize="13sp"
+        android:layout_marginTop="25dp"
+        android:text="2017-2-25 15:02"
+        android:gravity="center"/>
+    <!-- 发送消息头像、内容 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <!-- 发送消息头像-->
+        <ImageView
+            android:id="@+id/iv_send_txt_msg_head"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_headportrait"
+            android:layout_alignParentRight="true"/>
+        <!-- 发送消息内容 -->
+        <TextView
+            android:id="@+id/tv_send_txt_msg_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/iv_send_txt_msg_head"
+            android:minHeight="46dp"
+            android:textColor="@color/text_color_black3"
+            android:maxWidth="200dp"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:text=""
+            android:background="@drawable/item_jk_chat_send_txt_msg_shape"/>
+        <!-- 消息发送失败提示 -->
+        <ImageView
+            android:id="@+id/iv_send_txt_msg_fail"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_send_txt_msg_content"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/jk_chat_send_failure"/>
+    </RelativeLayout>
+</LinearLayout>

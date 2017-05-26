@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_height"
+    android:background="@color/color_title_bar"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="10"
+            android:singleLine="true"
+            android:text="健客"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_gray_lighted"
+            android:textSize="@dimen/textSize_18" />
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingRight="40dip"
+            android:paddingLeft="@dimen/padding_size_18"
+            android:src="@drawable/title_btn_back" />
+        <ImageView
+            android:id="@+id/btnSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btnMenu"
+            android:padding="@dimen/padding_size_3"
+            android:layout_marginRight="@dimen/margin_Size15"
+            android:layout_centerVertical="true"
+            android:src="@drawable/title_bar_share"
+            android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/padding_size_18"
+            android:src="@drawable/title_btn_menu" />
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btnMenu"
+            android:layout_marginRight="@dimen/margin_Size16"
+            android:visibility="gone"
+            android:scaleType="fitXY"
+            android:src="@drawable/title_bar_search" />
+        <TextView 
+            android:id="@+id/tvMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="15dp"
+            android:textColor="@color/text_color_common_normal"
+            android:textSize="@dimen/textSize_14"
+            android:maxLines="1"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divide_line2" />
+</LinearLayout>

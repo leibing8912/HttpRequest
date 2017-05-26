@@ -1,7 +1,6 @@
 package cn.jianke.sample.httprequest.okhttp;
 
 import android.os.Environment;
-import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import cn.jianke.httprequest.utils.StringUtil;
+import cn.jianke.sample.httprequest.JkRequestLog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -31,6 +31,8 @@ import okio.Source;
 public class JkOkHttpUpDownFileUtils {
     // 日志标识
     private final static String TAG = "JkRequest@JkOkHttpUpDownFileUtils";
+    // 上传文件--图片类型
+    public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     // 连接超时时间
     public final static int CONNECT_TIMEOUT =60;
     // 读取超时时间
@@ -81,61 +83,19 @@ public class JkOkHttpUpDownFileUtils {
     }
 
     /**
-     * 上传单文件
-     * @author leibing
-     * @createTime 2017/5/6
-     * @lastModify 2017/5/6
-     * @param requestUrl 上传文件地址
-     * @param filePath 本地地址
-     * @param mCallBack 上传回调
-     * @return
-     */
-    public void upLoadFile(String requestUrl, String filePath, final UpLoadFileCallBack mCallBack) {
-        // create file
-        File file = new File(filePath);
-        // create requestBody
-        RequestBody body = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-        // create request
-        final Request request = new Request.Builder().url(requestUrl).post(body).build();
-        // create call
-        final Call call = mOkHttpClient.newCall(request);
-        // start request
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "#upLoadFile single onFailure");
-                if (mCallBack != null)
-                    mCallBack.onFail(null);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String string = response.body().string();
-                    Log.e(TAG, "#upLoadFile single onSuccess#data=" + string);
-                    if (mCallBack != null)
-                        mCallBack.onSuccess(string);
-                } else {
-                    Log.e(TAG, "#upLoadFile single onFailure");
-                    if (mCallBack != null)
-                        mCallBack.onFail(null);
-                }
-            }
-        });
-    }
-
-    /**
-     * 上传多文件（通过hashmap存储多文件）
+     * 上传文件
      * @author leibing
      * @createTime 2017/5/6
      * @lastModify 2017/5/6
      * @param requestUrl 上传文件地址
      * @param paramsMap 本地多文件表
+     * @param mediaType 文件类型
      * @param mCallBack 上传回调
      * @return
      */
     public void upLoadFile(String requestUrl,
                            HashMap<String, Object> paramsMap,
+                           MediaType mediaType,
                            final UpLoadFileCallBack mCallBack) {
         try {
             MultipartBody.Builder builder = new MultipartBody.Builder();
@@ -149,7 +109,7 @@ public class JkOkHttpUpDownFileUtils {
                 } else {
                     File file = (File) object;
                     builder.addFormDataPart(key, file.getName(),
-                            RequestBody.create(null, file));
+                            RequestBody.create(mediaType, file));
                 }
             }
             // create RequestBody
@@ -162,7 +122,7 @@ public class JkOkHttpUpDownFileUtils {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.e(TAG, "#upLoadFile multi onFailure");
+                    JkRequestLog.printLogs(TAG, "#upLoadFile onFailure");
                     if (mCallBack != null)
                         mCallBack.onFail(null);
                 }
@@ -171,11 +131,11 @@ public class JkOkHttpUpDownFileUtils {
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        Log.e(TAG, "#upLoadFile multi onSuccess#data=" + string);
+                        JkRequestLog.printLogs(TAG, "#upLoadFile onSuccess#data=" + string);
                         if (mCallBack != null)
                             mCallBack.onSuccess(string);
                     } else {
-                        Log.e(TAG, "#upLoadFile multi onFailure");
+                        JkRequestLog.printLogs(TAG, "#upLoadFile onFailure");
                         if (mCallBack != null)
                             mCallBack.onFail(null);
                     }
@@ -222,13 +182,13 @@ public class JkOkHttpUpDownFileUtils {
                     for (long readCount; (readCount = source.read(buf, 2048)) != -1; ) {
                         sink.write(buf, readCount);
                         current += readCount;
-                        Log.e(TAG, "#createProgressRequestBody onProgress#total= "
+                        JkRequestLog.printLogs(TAG, "#createProgressRequestBody onProgress#total= "
                                 + remaining + "#current=" +  current);
                         if (mCallBack != null)
                             mCallBack.onProgress(remaining, current);
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, "#createProgressRequestBody#Exception");
+                    JkRequestLog.printLogs(TAG, "#createProgressRequestBody#Exception");
                     if (mCallBack != null)
                         mCallBack.onException(e);
                 }
@@ -275,7 +235,7 @@ public class JkOkHttpUpDownFileUtils {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.e(TAG, "#upLoadFileOnProgress multi onFailure");
+                    JkRequestLog.printLogs(TAG, "#upLoadFileOnProgress multi onFailure");
                     if (mCallBack != null)
                         mCallBack.onFail(null);
                 }
@@ -284,11 +244,11 @@ public class JkOkHttpUpDownFileUtils {
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        Log.e(TAG, "#upLoadFileOnProgress multi onSuccess#data=" + string);
+                        JkRequestLog.printLogs(TAG, "#upLoadFileOnProgress multi onSuccess#data=" + string);
                         if (mCallBack != null)
                             mCallBack.onSuccess(string);
                     } else {
-                        Log.e(TAG, "#upLoadFileOnProgress multi onFailure");
+                        JkRequestLog.printLogs(TAG, "#upLoadFileOnProgress multi onFailure");
                         if (mCallBack != null)
                             mCallBack.onFail(null);
                     }
@@ -316,7 +276,7 @@ public class JkOkHttpUpDownFileUtils {
         // SD卡不存在
         if (StringUtil.isEmpty(getSDPath())
                 && mCallBack != null) {
-            Log.e(TAG, "#downLoadFile onFailure#" + SDCARD_NO_EXIST);
+            JkRequestLog.printLogs(TAG, "#downLoadFile onFailure#" + SDCARD_NO_EXIST);
             mCallBack.onFail(SDCARD_NO_EXIST);
             return;
         }
@@ -326,7 +286,7 @@ public class JkOkHttpUpDownFileUtils {
         final File file = new File(destFileDir, fileName);
         if (file.exists()
                 && mCallBack != null) {
-            Log.e(TAG, "#downLoadFile onFailure#" + HAS_THE_FILE_EXISTS);
+            JkRequestLog.printLogs(TAG, "#downLoadFile onFailure#" + HAS_THE_FILE_EXISTS);
             mCallBack.onFail(HAS_THE_FILE_EXISTS);
             return;
         }
@@ -338,7 +298,7 @@ public class JkOkHttpUpDownFileUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "#downLoadFile onFailure");
+                JkRequestLog.printLogs(TAG, "#downLoadFile onFailure");
                 if (mCallBack != null){
                     mCallBack.onFail(null);
                 }
@@ -360,17 +320,17 @@ public class JkOkHttpUpDownFileUtils {
                         current += len;
                         mStringBuilder.append(buf);
                         fos.write(buf, 0, len);
-                        Log.e(TAG, "#downLoadFile onProgress#" + "total="
+                        JkRequestLog.printLogs(TAG, "#downLoadFile onProgress#" + "total="
                                 + total + "#current=" + current);
                         if (mCallBack != null)
                             mCallBack.onProgress(total, current);
                     }
                     fos.flush();
-                    Log.e(TAG, "#downLoadFile onSuccess#data=" + mStringBuilder.toString());
+                    JkRequestLog.printLogs(TAG, "#downLoadFile onSuccess#data=" + mStringBuilder.toString());
                     if (mCallBack != null)
                         mCallBack.onSuccess(mStringBuilder.toString());
                 } catch (IOException e) {
-                    Log.e(TAG, "#downLoadFile onFail IOException");
+                    JkRequestLog.printLogs(TAG, "#downLoadFile onFail IOException");
                     if (mCallBack != null)
                         mCallBack.onFail(null);
                 } finally {
@@ -382,7 +342,7 @@ public class JkOkHttpUpDownFileUtils {
                             fos.close();
                         }
                     } catch (IOException e) {
-                        Log.e(TAG, "#downLoadFile onFail IOException");
+                        JkRequestLog.printLogs(TAG, "#downLoadFile onFail IOException");
                         if (mCallBack != null)
                             mCallBack.onException(e);
                     }

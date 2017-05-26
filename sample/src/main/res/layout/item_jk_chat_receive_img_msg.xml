@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_receive_img_msg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!-- 接收消息时间 -->
+    <TextView
+        android:id="@+id/tv_receive_img_msg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:textSize="13sp"
+        android:layout_marginTop="25dp"
+        android:text="2017-2-25 15:02"
+        android:gravity="center"/>
+    <!-- 接收消息头像、图片 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <!-- 接收消息头像-->
+        <ImageView
+            android:id="@+id/iv_receive_img_msg_head"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/doctor_head_portrait"/>
+        <!-- 接收图片 -->
+        <ImageView
+            android:id="@+id/iv_receive_img_msg_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:background="@drawable/item_jk_chat_receive_img_shape"/>
+    </LinearLayout>
+</LinearLayout>
+

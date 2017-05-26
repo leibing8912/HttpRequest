@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_item_jk_chat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- 药品信息消息 -->
+    <include layout="@layout/item_jk_chat_drug_information"/>
+    <!-- 接收图片消息 -->
+    <include layout="@layout/item_jk_chat_receive_img_msg"/>
+    <!-- 接收文本消息 -->
+    <include layout="@layout/item_jk_chat_receive_txt_msg"/>
+    <!-- 发送药品消息 -->
+    <include layout="@layout/item_jk_chat_send_drug_msg"/>
+    <!-- 发送图片消息 -->
+    <include layout="@layout/item_jk_chat_send_img_msg"/>
+    <!-- 发送文本消息 -->
+    <include layout="@layout/item_jk_chat_send_txt_msg"/>
+</LinearLayout>

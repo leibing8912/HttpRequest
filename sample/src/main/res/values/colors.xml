@@ -3,4 +3,117 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="floating_action_button">#2fa3ed</color>
+    <color name="floating_action_button_ripplecolor">#6dbef2</color>
+    <!-- QRCode scanner color begin -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#B0000000</color>
+    <color name="viewfinder_frame">#90FFFFFF</color>
+    <color name="result_point_color">#C0FFFF00</color>
+    <color name="laser_color">#0F0</color>
+    <color name="corner_color">#00FF00</color>
+    <!-- QRCode scanner color end -->
+    <color name="base_bg_color">#f5f5f5</color>
+    <color name="base_bg_color2">#f6f6f6</color>
+    <color name="base_bg_color3">#F2F2F2</color>
+    
+    <color name="text_color_white">#FFFFFF</color>
+    <color name="text_color_white_thin">#FFDAD7</color>
+    <color name="text_color_common_normal">#444444</color>
+    <color name="text_color_common_normal_2">#454545</color>
+    <color name="text_color_common_normal_new">#292929</color>
+    <color name="text_color_common_lighted">#999999</color>
+    <color name="text_color_common_lighted_new">#949494</color>
+    <color name="text_color_common_lighted1">#777777</color>
+    <color name="text_color_common_lighted2">#aaaaaa</color>
+    <color name="text_color_black1">#222222</color>
+    <color name="edittext_color_normal">#444444</color>
+    <color name="edittext_color_hint">#999999</color>
+    <color name="text_color_red">#cc0000</color>
+    <color name="text_color_red_1">#ff6a63</color>
+    <color name="text_color_red_2">#ff442c</color>
+    <color name="text_color_red_4">#fc5151</color>
+    <color name="text_color_red_3">#ff422c</color>
+    <color name="text_color_red_5">#ff4832</color>
+    <color name="text_color_red_6">#f60e23</color>
+    <color name="text_color_gray">#aaaaaa</color>
+    <color name="text_color_gray_1">#bbbbbb</color>
+    <color name="text_color_black">#444444</color>
+    <color name="text_color_black2">#333333</color>
+    <color name="text_color_black3">#666666</color>
+    <color name="text_color_black4">#d9d9d9</color>
+    <color name="text_color_blue">#61b1f4</color>
+    <color name="black">#000000</color>
+    <color name="chest_gray">#595260</color>
+
+    <color name="color_blue_lighted">#539ad6</color>
+    <color name="color_blue_normal">#61b1f4</color>
+    <color name="color_blue_normal1">#61b2f4</color>
+    <color name="color_blue_normal2">#62b1f4</color>
+    <color name="text_color_blue_1">#177DFE</color>
+    <color name="color_blue_normal_dark">#1a5f99</color>
+    <color name="color_blue_lighted_dark">#094578</color>
+    <color name="color_green_normal">#569b24</color>
+    <color name="color_green_lighted">#6fbd36</color>
+    <color name="color_red_normal">#db4f48</color>
+    <color name="color_red_normal1">#ff6b62</color>
+    <color name="color_red_lighted">#ff4a63</color>
+    <color name="color_gray_normal">#aaaaaa</color>
+    <color name="color_gray_lighted">#111111</color>
+    <color name="color_white_normal">#ffffff</color>
+    <color name="color_white_lighted">#fcfcfc</color>
+    <color name="color_line_gray">#eeeeee</color>
+    <color name="color_divide_line">#dcdcdc</color>
+    <color name="color_divide_line1">#dfe1e3</color>
+    <color name="color_divide_line2">#dddddd</color>
+    <color name="color_divide_line3">#DADADA</color>
+    <color name="color_title_bar">#ffffff</color>
+    <color name="color_white">#ffffff</color>
+    <color name="color_blue">#0082f0</color>
+    <color name="color_gray">#aaaaaa</color>
+    <color name="color_devide_line_gray">#007ae1</color>
+    <color name="color_btn_border_white">#e5e5e5</color>
+    <color name="color_bg_red">#FF4B33</color>
+    <color name="color_light_golden">#FAFAD2</color>
+    <color name="color_dark_golden">#B8860B</color>
+    <color name="color_golden">#FFCC00</color>
+    <color name="color_yellow">#eb8235</color>
+    <color name="bg_default">#EEEEEE</color>
+
+    <color name="color_bg_menu_black">#191919</color>
+    <color name="color_bg_menu_white">#FFFFFF</color>
+    <color name="transparent">#90000000</color>
+    <color name="transparent1">#50000000</color>
+
+    <color name="transparent_pure">#00000000</color>
+    
+    <color name="chat_bg_input">#FEFEFE</color>
+    <color name="chat_bg_list">#F0F0F0</color>
+    
+    <color name="btn_gray_normal">#d3d3d3</color>
+    <color name="gray">#cccccc</color>
+    <color name="white">#ffffff</color>
+    <color name="time_bar_yellow">#fffdeb</color>
+	<color name="title_color">#00a2ff</color>
+	
+	<color name="text_gray_light">#BCBCBC</color>
+    <color name="text_gray">#999999</color>
+    <color name="bg_share">#FFFFFF</color>
+	
+	<color name="text_selector_normal">#33506e</color>
+    <color name="text_selector_pressed">#00aeff</color>
+    <color name="text_color_yellow">#FFD309</color>
+    <color name="text_color_red1">#FF422C</color>
+    <color name="bg_color_red">#ff3030</color>
+    <color name="septal_line">#dadada</color>
+    <color name="close_chat_txt_color_red">#f95252</color>
+    <color name="chat_bg_color_yellow">#fffcea</color>
+    <color name="line_dd">#dddddd</color>
+    <color name="text_blue">#007aff</color>
+    <color name="jk_chat_bottom_bg_color">#f9f9f9</color>
+    <color name="jk_chat_receive_msg_shape_stroke">#5aa2de</color>
+    <color name="tab_select">#06a6f8</color>
+    <color name="tab_normal">#333333</color>
+    <color name="half_transparent_bg">#88000000</color>
 </resources>
