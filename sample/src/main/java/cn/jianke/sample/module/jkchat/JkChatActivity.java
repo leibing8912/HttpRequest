@@ -68,6 +68,7 @@ import static cn.jianke.sample.module.jkchat.JkChatConstant.PRAISE_NO_SELECT_TIP
 import static cn.jianke.sample.module.jkchat.JkChatConstant.PRAISE_SUCCESS;
 import static cn.jianke.sample.module.jkchat.JkChatConstant.PROMPT_LINE_TIP_FOUR_STATUS;
 import static cn.jianke.sample.module.jkchat.JkChatConstant.PROMPT_LINE_TIP_ONE_STATUS;
+import static cn.jianke.sample.module.jkchat.JkChatConstant.PROMPT_LINE_TIP_SIX_STATUS;
 import static cn.jianke.sample.module.jkchat.JkChatConstant.PROMPT_LINE_TIP_THREE_STATUS;
 import static cn.jianke.sample.module.jkchat.JkChatConstant.SDCARD_NO_EXIST;
 import static cn.jianke.sample.module.jkchat.JkChatConstant.SELECT_PIC_CODE;
@@ -195,6 +196,8 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
     private boolean isItemLongOnClick = false;
     // 药品信息
     private JkChatBean.Drug mDrug;
+    // 是否无医生在线
+    private boolean isNoDoctorOnline = false;
     // jk chat logical processing listener
     private JkChatViewModel.ViewModelListener mViewModelListener
             = new JkChatViewModel.ViewModelListener() {
@@ -232,6 +235,10 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
 
         @Override
         public void disConnect() {
+            if (isNoDoctorOnline){
+                isNoDoctorOnline = false;
+                return;
+            }
             // 当对话断开时的布局显示
             disConnectedView();
             // 断开连接时提示框显示
@@ -242,7 +249,23 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
         }
 
         @Override
+        public void noDoctorOnline() {
+            isNoDoctorOnline = true;
+            // 当对话断开时的布局显示
+            disConnectedView();
+            // 断开连接时提示框显示
+            promptLineShow(PROMPT_LINE_TIP_SIX_STATUS, "");
+            connectStatus = PROMPT_LINE_TIP_SIX_STATUS;
+            // 底部布局显示（继续咨询）
+            whatBottomViewShow(JkChatConstant.BOTTOM_VIEW_SHOW_CONTINUE_CONSULTING);
+        }
+
+        @Override
         public void noNetWork() {
+            if (isNoDoctorOnline){
+                isNoDoctorOnline = false;
+                return;
+            }
             // 断开连接
             disConnect();
             // 无网提示
@@ -901,6 +924,15 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
                             // 提示栏状态--不需要显示状态栏
                             jkChatTipLy.setVisibility(View.GONE);
                             break;
+                        case PROMPT_LINE_TIP_SIX_STATUS:
+                            // 提示栏状态--"客服正忙，如有需要请拨打4006989999"
+                            jkChatTipOneTv.setText(JkChatConstant.PROMPT_CUSTOMER_SERVICE_BUSY);
+                            whatTipViewShow(JkChatConstant.PROMPT_LINE_SELECT_DIALOG_PROMPT);
+                            sendMsgBtn.setClickable(false);
+                            sendMsgBtn.setBackgroundColor(getResources().getColor(R.color.gray));
+                            sendMsgEdt.setEnabled(false);
+                            otherFunctionIv.setClickable(false);
+                            break;
                         default:
                             break;
                     }
@@ -908,7 +940,7 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
             });
         }
     }
-
+    
     /**
      * 决定显示那种提示栏布局
      * @author leibing

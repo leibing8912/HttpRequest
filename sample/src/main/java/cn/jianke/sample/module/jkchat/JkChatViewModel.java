@@ -409,6 +409,13 @@ public class JkChatViewModel {
                     && mViewModelListener != null){
                 mViewModelListener.connected(mJkChatMsgBean.StaffName);
             }
+            // 判断无医生在线
+            if (JkChatConstant.CANCELLATION_SERVICE.equals(mJkChatMsgBean.Type)
+                    && "0".equals(mJkChatMsgBean.Msg)
+                    && mViewModelListener != null){
+                mViewModelListener.noDoctorOnline();
+                return;
+            }
             if (StringUtil.isNotEmpty(mJkChatMsgBean.Msg)) {
                 JkChatMsg.receiveMsg(mJkChatMsgBean.Msg, new JkChatMsg.JkChatMsgListener() {
                     @Override
@@ -735,6 +742,8 @@ public class JkChatViewModel {
         void closed();
         // 对话断开
         void disConnect();
+        // 无医生在线
+        void noDoctorOnline();
         // 无网
         void noNetWork();
         // 更新局部view

@@ -288,18 +288,23 @@ public class JkChatModel {
                                         && mData != null
                                         && mData.size() != 0)
                                     mModelListener.setData(mData);
+                            }else {
+                                if (mModelListener != null)
+                                    mModelListener.setData(null);
                             }
                         }
                     }
 
                     @Override
                     public void onError(String err_msg) {
-
+                        if (mModelListener != null)
+                            mModelListener.setData(null);
                     }
 
                     @Override
                     public void onFailure() {
-
+                        if (mModelListener != null)
+                            mModelListener.setData(null);
                     }
                 });
     }

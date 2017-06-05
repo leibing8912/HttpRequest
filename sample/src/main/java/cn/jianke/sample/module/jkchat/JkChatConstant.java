@@ -17,6 +17,8 @@ public class JkChatConstant {
     public final static String PROMPT_LINE_TIP_THREE_UPPER_HALF = "对话已建立，您正在和";
     // 提示栏--提示3下半部
     public final static String PROMPT_LINE_TIP_THREE_LOWER_HALF = "药师对话";
+    // 提示栏--客服正忙，如有需要请拨打4006989999
+    public static final String PROMPT_CUSTOMER_SERVICE_BUSY = "客服正忙，如有需要请拨打4006989999";
     // 提示栏状态--"正在为您转接......"
     public final static int PROMPT_LINE_TIP_ONE_STATUS = 0x20;
     // 提示栏状态--"对话已建立，您正在与xx药师对话"
@@ -27,6 +29,8 @@ public class JkChatConstant {
     public final static int PROMPT_LINE_TIP_FOUR_STATUS = 0x23;
     // 提示栏状态--不需要显示状态栏
     public final static int PROMPT_LINE_TIP_FIVE_STATUS = 0x24;
+    // 提示栏状态--客服正忙，如有需要请拨打4006989999
+    public final static int PROMPT_LINE_TIP_SIX_STATUS = 0x25;
     // 提示栏布局选择--对话状态提示
     public final static int PROMPT_LINE_SELECT_DIALOG_PROMPT = 0x31;
     // 提示栏布局选择--网络状态差提示
@@ -103,4 +107,6 @@ public class JkChatConstant {
     public static final int GOTO_GOODS_DETAILS_REQUEST_CODE  = 0x89;
     // 跳转到商品详情页
     public static final String GOTO_GOODS_DETAILS_PAGE = "跳转商品详情页";
+    // 客服注销
+    public static final String  CANCELLATION_SERVICE = "客服注销";
 }
