@@ -940,7 +940,7 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
             });
         }
     }
-    
+
     /**
      * 决定显示那种提示栏布局
      * @author leibing

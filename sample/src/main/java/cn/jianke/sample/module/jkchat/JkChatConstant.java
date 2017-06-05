@@ -8,7 +8,14 @@ package cn.jianke.sample.module.jkchat;
  */
 public class JkChatConstant {
     // ws url
-    public static String WS_URL = "ws://tw.sgz88.com:2019/area=john&staff=&psid=&utype=1&page=1&user=1234567890&website=tw&number=3&eng=0&ftype=android&act=1&refurl=m.jianke.com";
+    // 测试
+//    public static String WS_URL = "ws://tw.sgz88.com:2019/" +
+//            "area=john&staff=&psid=&utype=1&page=1&user=1234567890&" +
+//            "website=tw&number=3&eng=0&ftype=android&act=1&refurl=m.jianke.com";
+    // 正式
+    public static String WS_URL = "ws://a1wei.sgz88.com:2011/" +
+            "area=john&staff=&psid=&utype=1&page=1&user=1234567890&" +
+            "website=a1wei&number=3&eng=0&ftype=android&act=1&refurl=m.jianke.com";
     // 提示栏--提示1
     public final static String PROMPT_LINE_TIP_ONE = "正在为您转接......";
     // 提示栏--提示2
