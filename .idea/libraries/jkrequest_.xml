@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jkrequest-">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/sample/build/intermediates/exploded-aar/jkrequest/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/sample/build/intermediates/exploded-aar/jkrequest/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

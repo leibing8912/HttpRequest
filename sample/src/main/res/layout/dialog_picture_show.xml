@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ViewFlipper
-        android:id="@+id/vf_dialog_picture"
+    <cn.jianke.sample.widget.ZoomImageView
+        android:id="@+id/ziv_pic_look"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="matrix"
         android:layout_centerInParent="true">
-    </ViewFlipper>
+    </cn.jianke.sample.widget.ZoomImageView>
 </RelativeLayout>

@@ -501,10 +501,7 @@ public class JkChatActivity extends BaseActivity implements View.OnLayoutChangeL
             @Override
             public void openLargerPic(String url) {
                 // 聊天列表中图片大图预览
-                ArrayList urlsList = new ArrayList();
-                urlsList.add(url);
-                PictureShowDialog dialog = new PictureShowDialog(JkChatActivity.this,
-                        urlsList);
+                PictureShowDialog dialog = new PictureShowDialog(JkChatActivity.this, url);
                 dialog.show();
             }
         });
